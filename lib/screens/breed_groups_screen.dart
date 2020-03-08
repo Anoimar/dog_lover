@@ -1,15 +1,18 @@
 import 'package:doglover/models/breeds_provider.dart';
+import 'package:doglover/widgets/group_title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../styles.dart';
 
-class DogsScreen extends StatelessWidget {
+class BreedGroupsScreen extends StatelessWidget {
+  static const String id = '/';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Styles.brownToolbar,
+        backgroundColor: Styles.primaryDark,
         title: Center(child: Text('I Love Dogs')),
       ),
       backgroundColor: Styles.mainBackground,
@@ -19,10 +22,11 @@ class DogsScreen extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  Breed breed = breeds.breedsList[index];
-                  return Text(breed.name);
+                  return GroupTitle(
+                    entry: breeds.breedListViewEntries[index],
+                  );
                 },
-                itemCount: breeds.breedsList.length,
+                itemCount: breeds.breedListViewEntries.length,
               ),
             )
           ]);

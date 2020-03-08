@@ -30,12 +30,12 @@ class BreedScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Container(
+                      width: 50.0,
+                    ),
                     Text(
                       breed.name,
-                      style: TextStyle(
-                          color: Styles.primaryDark,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0),
+                      style: kMediumLabelStyle,
                     ),
                     SizedBox(
                       width: 50.0,
@@ -49,6 +49,18 @@ class BreedScreen extends StatelessWidget {
                     )
                   ],
                 ),
+                DogTraitRow(
+                  firstTrait: 'Bred for:',
+                  firstTraitValue: breed.bredFor,
+                  secondTrait: 'Breed group:',
+                  secondTraitValue: breed.group,
+                ),
+                DogTraitRow(
+                  firstTrait: "Weight:",
+                  firstTraitValue: '${breed.weight} kg',
+                  secondTrait: "Height:",
+                  secondTraitValue: '${breed.height} cm',
+                )
               ]),
             ),
           ]);
@@ -67,5 +79,56 @@ class BreedScreen extends StatelessWidget {
         valueColor: AlwaysStoppedAnimation<Color>(Styles.primaryDark),
       ),
     );
+  }
+}
+
+class DogTraitRow extends StatelessWidget {
+  const DogTraitRow(
+      {this.firstTrait,
+      this.secondTrait,
+      this.firstTraitValue,
+      this.secondTraitValue});
+
+  final String firstTrait;
+  final String secondTrait;
+  final String firstTraitValue;
+  final String secondTraitValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+        DogTraitColumn(
+          traitName: firstTrait,
+          value: firstTraitValue,
+        ),
+        DogTraitColumn(
+          traitName: secondTrait,
+          value: secondTraitValue,
+        )
+      ]),
+    );
+  }
+}
+
+class DogTraitColumn extends StatelessWidget {
+  const DogTraitColumn({this.traitName, this.value});
+
+  final String traitName;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Text(
+        traitName,
+        style: kSmallLabelStyle,
+      ),
+      Text(
+        value,
+        style: kEunryTextStyle,
+      )
+    ]);
   }
 }

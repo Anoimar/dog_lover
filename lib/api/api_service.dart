@@ -17,13 +17,7 @@ class ApiService {
     if (response.statusCode == 200) {
       _jsonResponse = response.body;
       List<dynamic> dogInfo = jsonDecode(_jsonResponse);
-      return dogInfo
-          .map((data) => Breed(
-                id: data['id'],
-                name: data['name'],
-                group: data['breed_group'],
-              ))
-          .toList();
+      return dogInfo.map((data) => Breed.fromJson(data)).toList();
     }
     throw Exception();
   }

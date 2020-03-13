@@ -1,3 +1,4 @@
+import 'package:doglover/constants.dart';
 import 'package:doglover/models/breed.dart';
 import 'package:doglover/models/breeds_provider.dart';
 import 'package:doglover/styles.dart';
@@ -76,11 +77,13 @@ class BreedScreen extends StatelessWidget {
                     ),
                     Row(
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: DogTraitColumn(
-                            traitName: 'Temperament',
-                            value: breed.temperament,
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            child: DogTraitColumn(
+                              traitName: 'Temperament',
+                              value: breed.temperament,
+                            ),
                           ),
                         ),
                       ],
@@ -97,6 +100,15 @@ class BreedScreen extends StatelessWidget {
 
   Widget buildImage(BreedsProvider breeds) {
     String imageUrl = breeds.imageUrl;
+    if (imageUrl == kError) {
+      return SafeArea(
+        child: Icon(
+          Icons.warning,
+          color: Colors.orange,
+          size: 80.0,
+        ),
+      );
+    }
     if (imageUrl.isNotEmpty) {
       return Image.network(imageUrl);
     }
@@ -163,7 +175,6 @@ class DogTraitColumn extends StatelessWidget {
         ),
         Text(
           value,
-          textAlign: TextAlign.justify,
           overflow: TextOverflow.ellipsis,
           maxLines: 3,
           style: kEunryTextStyle,

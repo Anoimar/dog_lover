@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:doglover/api/api_service.dart';
+import 'package:doglover/constants.dart';
 import 'package:doglover/widgets/expanded_list/entry.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -47,8 +48,13 @@ class BreedsProvider with ChangeNotifier {
   }
 
   Future<void> getBreedImageUrl(String id) async {
-    _imageUrl = await ApiService().getBreedImageUrl(id);
-    notifyListeners();
+    try {
+      _imageUrl = await ApiService().getBreedImageUrl(id);
+    } catch (e) {
+      _imageUrl = kError;
+    } finally {
+      notifyListeners();
+    }
   }
 
   void createListViewEntries() {

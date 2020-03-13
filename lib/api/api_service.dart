@@ -27,6 +27,9 @@ class ApiService {
     if (response.statusCode == 200) {
       _jsonResponse = response.body;
       List<dynamic> dogInfo = jsonDecode(_jsonResponse);
+      if (dogInfo.isEmpty) {
+        throw ('no image for breed');
+      }
       return dogInfo[0]['url'];
     }
     throw Exception();

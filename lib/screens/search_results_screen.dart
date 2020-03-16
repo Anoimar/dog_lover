@@ -64,9 +64,11 @@ class _DogCardState extends State<DogCard> {
     } catch (e) {
       url = kError;
     } finally {
-      setState(() {
-        _imageUrl = url;
-      });
+      if (this.mounted) {
+        setState(() {
+          _imageUrl = url;
+        });
+      }
     }
   }
 

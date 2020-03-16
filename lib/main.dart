@@ -1,5 +1,7 @@
 import 'package:doglover/screens/breed_groups_screen.dart';
 import 'package:doglover/screens/breed_screen.dart';
+import 'package:doglover/screens/search_results_screen.dart';
+import 'package:doglover/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,10 +19,12 @@ class MyApp extends StatelessWidget {
       },
       child: MaterialApp(
           title: 'I Love Dogs',
+          theme: ThemeData(accentColor: Styles.primaryDark),
           initialRoute: BreedGroupsScreen.id,
           routes: {
             BreedGroupsScreen.id: (context) => BreedGroupsScreen(),
-            BreedScreen.id: (context) => BreedScreen()
+            BreedScreen.id: (context) => BreedScreen(),
+            SearchResultsScreen.id: (context) => SearchResultsScreen()
           }),
     );
   }

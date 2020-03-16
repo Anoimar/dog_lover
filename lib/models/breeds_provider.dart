@@ -47,6 +47,18 @@ class BreedsProvider with ChangeNotifier {
     getBreedImageUrl(id.toString());
   }
 
+  List<Breed> queryResults(String query) {
+    return _breedsList.where((breed) {
+      List<String> words = breed.name.split(' ');
+      for (String word in words) {
+        if (word.toLowerCase().startsWith(query.toLowerCase())) {
+          return true;
+        }
+      }
+      return false;
+    }).toList();
+  }
+
   Future<void> getBreedImageUrl(String id) async {
     try {
       _imageUrl = await ApiService().getBreedImageUrl(id);

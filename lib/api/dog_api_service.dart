@@ -4,7 +4,7 @@ import 'package:doglover/models/breed.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
-class ApiService {
+class DogApiService {
   String _baseUrl = 'https://api.thedogapi.com/v1/';
   String _jsonResponse = '';
 

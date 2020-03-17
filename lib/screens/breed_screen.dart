@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doglover/constants.dart';
+import 'package:doglover/data/breeds_provider.dart';
 import 'package:doglover/models/breed.dart';
-import 'package:doglover/models/breeds_provider.dart';
 import 'package:doglover/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,8 @@ class BreedScreen extends StatelessWidget {
                     ),
                     DogTraitRow(
                       firstTrait: 'Bred for:',
-                      firstTraitValue: breed.bredFor,
+                      firstTraitValue:
+                          breed.bredFor != null ? breed.bredFor : '',
                       secondTrait: 'Breed group:',
                       secondTraitValue: breed.group,
                     ),
@@ -97,7 +99,7 @@ class BreedScreen extends StatelessWidget {
   }
 
   Widget buildImage(BreedsProvider breeds) {
-    String imageUrl = breeds.imageUrl;
+    String imageUrl = breeds.selectedBreedImageUrl;
     if (imageUrl == kError) {
       return SafeArea(
         child: Icon(
@@ -108,7 +110,9 @@ class BreedScreen extends StatelessWidget {
       );
     }
     if (imageUrl.isNotEmpty) {
-      return Image.network(imageUrl);
+      return Image(
+        image: CachedNetworkImageProvider(imageUrl),
+      );
     }
     return SafeArea(
       child: FractionallySizedBox(

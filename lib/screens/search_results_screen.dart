@@ -1,7 +1,7 @@
-import 'package:doglover/api/api_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doglover/constants.dart';
+import 'package:doglover/data/breeds_provider.dart';
 import 'package:doglover/models/breed.dart';
-import 'package:doglover/models/breeds_provider.dart';
 import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,17 +51,17 @@ class DogCard extends StatefulWidget {
 
 class _DogCardState extends State<DogCard> {
   String _imageUrl = '';
-  @override
-  void initState() {
-    super.initState();
-    getImageUrl();
-  }
 
   Future getImageUrl() async {
+    if (_imageUrl.isNotEmpty) {
+      return;
+    }
     String url;
     try {
-      url = await ApiService().getBreedImageUrl(widget.breed.id.toString());
+      url = await Provider.of<BreedsProvider>(context)
+          .getBreedImageUrl(widget.breed.id.toString());
     } catch (e) {
+      print(e);
       url = kError;
     } finally {
       if (this.mounted) {
@@ -156,6 +156,7 @@ class _DogCardState extends State<DogCard> {
   }
 
   Widget breedImage() {
+    getImageUrl();
     if (_imageUrl.isEmpty) {
       return FractionallySizedBox(
         widthFactor: 0.5,
@@ -166,13 +167,14 @@ class _DogCardState extends State<DogCard> {
       );
     }
     if (_imageUrl == kError) {
-      child:
       return Icon(
         Icons.warning,
         color: Colors.orange,
         size: 50.0,
       );
     }
-    return Image.network(_imageUrl);
+    return Image(
+      image: CachedNetworkImageProvider(_imageUrl),
+    );
   }
 }

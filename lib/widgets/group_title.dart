@@ -1,4 +1,4 @@
-import 'package:doglover/models/breeds_provider.dart';
+import 'package:doglover/data/breeds_provider.dart';
 import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/widgets/expanded_list/entry.dart';
 import 'package:flutter/cupertino.dart';

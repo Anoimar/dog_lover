@@ -1,4 +1,4 @@
-import 'package:doglover/models/breeds_provider.dart';
+import 'package:doglover/data/breeds_provider.dart';
 import 'package:doglover/screens/search_results_screen.dart';
 import 'package:doglover/widgets/group_title.dart';
 import 'package:flutter/material.dart';

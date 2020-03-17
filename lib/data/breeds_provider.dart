@@ -1,11 +1,13 @@
 import 'dart:collection';
 
-import 'package:doglover/api/api_service.dart';
+import 'package:doglover/api/dog_api_service.dart';
 import 'package:doglover/constants.dart';
+import 'package:doglover/data/source/breeds_repository.dart';
+import 'package:doglover/data/source/remote/breeds_remote_data_source.dart';
 import 'package:doglover/widgets/expanded_list/entry.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'breed.dart';
+import '../models/breed.dart';
 
 class BreedsProvider with ChangeNotifier {
   BreedsProvider() {
@@ -14,13 +16,15 @@ class BreedsProvider with ChangeNotifier {
 
   List<Breed> _breedsList = [];
   List<Entry> _breedListViewEntries = [];
-  String _imageUrl = '';
+  String _selectedBreedImageUrl = '';
   Breed _selectedBreed;
+  BreedsRepository _breedsRepository =
+      BreedsRepository(BreedsRemoteDataSource(DogApiService()));
 
   bool _isFetching = false;
   bool _isError = false;
   bool get isFetching => _isFetching;
-  String get imageUrl => _imageUrl;
+  String get selectedBreedImageUrl => _selectedBreedImageUrl;
   Breed get selectedBreed => _selectedBreed;
 
   UnmodifiableListView<Breed> get breedsList {
@@ -34,24 +38,34 @@ class BreedsProvider with ChangeNotifier {
   Future<void> initialize() async {
     _isFetching = true;
     notifyListeners();
-    _breedsList = await ApiService().getBreeds();
+    _breedsList = await _breedsRepository.loadBreeds();
     createListViewEntries();
     _isFetching = false;
     notifyListeners();
   }
 
   void breedSelected(int id) {
-    _imageUrl = '';
+    _selectedBreedImageUrl = '';
     _selectedBreed = _breedsList.firstWhere((breed) => breed.id == id);
     notifyListeners();
-    getBreedImageUrl(id.toString());
+    setSelectedImageUrl(id);
+  }
+
+  Future<void> setSelectedImageUrl(int id) async {
+    try {
+      _selectedBreedImageUrl = await getBreedImageUrl(id.toString());
+    } catch (e) {
+      _selectedBreedImageUrl = kError;
+    } finally {
+      notifyListeners();
+    }
   }
 
   List<Breed> queryResults(String query) {
     return _breedsList.where((breed) {
       List<String> words = breed.name.split(' ');
       for (String word in words) {
-        if (word.toLowerCase().startsWith(query.toLowerCase())) {
+        if (word.toLowerCase().startsWith(query.toLowerCase().trim())) {
           return true;
         }
       }
@@ -59,15 +73,8 @@ class BreedsProvider with ChangeNotifier {
     }).toList();
   }
 
-  Future<void> getBreedImageUrl(String id) async {
-    try {
-      _imageUrl = await ApiService().getBreedImageUrl(id);
-    } catch (e) {
-      _imageUrl = kError;
-    } finally {
-      notifyListeners();
-    }
-  }
+  Future<String> getBreedImageUrl(String id) async =>
+      await _breedsRepository.getBreedUrl(id);
 
   void createListViewEntries() {
     List<String> groups =

@@ -1,8 +1,8 @@
-import 'package:doglover/data/breeds_provider.dart';
 import 'package:doglover/screens/search_results_screen.dart';
+import 'package:doglover/viewmodel/breeds_view_model.dart';
+import 'package:doglover/viewmodel/view_model_provider.dart';
 import 'package:doglover/widgets/group_title.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../styles.dart';
 
@@ -11,12 +11,13 @@ class BreedGroupsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Styles.mainBackground,
-      body: SafeArea(
-        child: Container(
-          child: Consumer<BreedsProvider>(builder: (context, breeds, child) {
-            return Column(children: [
+    return ViewModelProvider<BreedsViewModel>(
+        model: BreedsViewModel(context: context),
+        builder: (BreedsViewModel model) {
+          return Scaffold(
+            backgroundColor: Styles.mainBackground,
+            body: SafeArea(
+                child: Column(children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SearchCard(),
@@ -25,17 +26,15 @@ class BreedGroupsScreen extends StatelessWidget {
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     return GroupTitle(
-                      entry: breeds.breedListViewEntries[index],
+                      entry: model.breedListViewEntries[index],
                     );
                   },
-                  itemCount: breeds.breedListViewEntries.length,
+                  itemCount: model.breedListViewEntries.length,
                 ),
-              )
-            ]);
-          }),
-        ),
-      ),
-    );
+              ),
+            ])),
+          );
+        });
   }
 }
 

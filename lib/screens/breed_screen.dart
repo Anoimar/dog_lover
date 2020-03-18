@@ -1,105 +1,117 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doglover/constants.dart';
-import 'package:doglover/data/breeds_provider.dart';
 import 'package:doglover/models/breed.dart';
 import 'package:doglover/styles.dart';
+import 'package:doglover/viewmodel/breed_details_view_model.dart';
+import 'package:doglover/viewmodel/view_model_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class BreedScreen extends StatelessWidget {
   static const String id = 'breed_screen';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      backgroundColor: Styles.mainBackground,
-      extendBodyBehindAppBar: true,
-      body: Container(
-        child: Consumer<BreedsProvider>(builder: (context, breeds, child) {
-          Breed breed = breeds.selectedBreed;
-          return Column(children: [
-            Flexible(
-              child: buildImage(breeds),
-              flex: 1,
-            ),
-            Flexible(
-              flex: 1,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0),
-                  child: Column(children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 50.0,
-                        ),
-                        Text(
-                          breed.name,
-                          style: kMediumLabelStyle,
-                        ),
-                        SizedBox(
-                          width: 50.0,
-                          height: 50.0,
-                          child: FloatingActionButton(
-                            backgroundColor: Styles.primaryDark,
-                            child: Icon(
-                              Icons.favorite,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    DogTraitRow(
-                      firstTrait: 'Bred for:',
-                      firstTraitValue:
-                          breed.bredFor != null ? breed.bredFor : '',
-                      secondTrait: 'Breed group:',
-                      secondTraitValue: breed.group,
-                    ),
-                    DogTraitRow(
-                      firstTrait: "Weight:",
-                      firstTraitValue: '${breed.weight} kg',
-                      secondTrait: "Height:",
-                      secondTraitValue: '${breed.height} cm',
-                    ),
-                    DogTraitRow(
-                      firstTrait: 'Life expectancy:',
-                      firstTraitValue: breed.lifeExpectancy,
-                      secondTrait: 'Origin:',
-                      secondTraitValue:
-                          breed.origin != null ? breed.origin : '?',
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: DogTraitColumn(
-                              traitName: 'Temperament',
-                              value: breed.temperament,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ]),
-                ),
+    int selectedId = ModalRoute.of(context).settings.arguments as int;
+    return ViewModelProvider<BreedDetailsViewModel>(
+        model: BreedDetailsViewModel(context: context),
+        builder: (BreedDetailsViewModel model) {
+          model.breedSelected(selectedId);
+          return Scaffold(
+              appBar: AppBar(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
               ),
-            ),
-          ]);
-        }),
+              backgroundColor: Styles.mainBackground,
+              extendBodyBehindAppBar: true,
+              body: Container(
+                  child: model.selectedBreed != null
+                      ? BreedDetails(model)
+                      : Container()));
+        });
+  }
+}
+
+class BreedDetails extends StatelessWidget {
+  const BreedDetails(this.model);
+  final BreedDetailsViewModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    Breed breed = model.selectedBreed;
+    return Column(children: [
+      Flexible(
+        child: buildImage(model),
+        flex: 1,
       ),
-    );
+      Flexible(
+        flex: 1,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0),
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 50.0,
+                  ),
+                  Text(
+                    breed.name,
+                    style: kMediumLabelStyle,
+                  ),
+                  SizedBox(
+                    width: 50.0,
+                    height: 50.0,
+                    child: FloatingActionButton(
+                      backgroundColor: Styles.primaryDark,
+                      child: Icon(
+                        Icons.favorite,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              DogTraitRow(
+                firstTrait: 'Bred for:',
+                firstTraitValue: breed.bredFor != null ? breed.bredFor : '',
+                secondTrait: 'Breed group:',
+                secondTraitValue: breed.group,
+              ),
+              DogTraitRow(
+                firstTrait: "Weight:",
+                firstTraitValue: '${breed.weight} kg',
+                secondTrait: "Height:",
+                secondTraitValue: '${breed.height} cm',
+              ),
+              DogTraitRow(
+                firstTrait: 'Life expectancy:',
+                firstTraitValue: breed.lifeExpectancy,
+                secondTrait: 'Origin:',
+                secondTraitValue: breed.origin != null ? breed.origin : '?',
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: DogTraitColumn(
+                        traitName: 'Temperament',
+                        value: breed.temperament,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ]),
+          ),
+        ),
+      ),
+    ]);
   }
 
-  Widget buildImage(BreedsProvider breeds) {
-    String imageUrl = breeds.selectedBreedImageUrl;
+  Widget buildImage(BreedDetailsViewModel viewModel) {
+    String imageUrl = viewModel.selectedBreedImageUrl;
     if (imageUrl == kError) {
       return SafeArea(
         child: Icon(

@@ -35,4 +35,5 @@ flutter:
 
   assets:
     - secrets/
+    - assets/
 

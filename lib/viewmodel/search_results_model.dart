@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:doglover/data/source/breeds_repository.dart';
+import 'package:doglover/data/repository/breeds_repository.dart';
 import 'package:doglover/models/breed.dart';
 import 'package:doglover/viewmodel/base_view_model.dart';
 import 'package:flutter/material.dart';

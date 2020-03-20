@@ -1,6 +1,5 @@
 import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/widgets/expanded_list/entry.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GroupTitle extends StatelessWidget {

@@ -6,7 +6,6 @@ import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/breed_card_view_model.dart';
 import 'package:doglover/viewmodel/search_results_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultsScreen extends StatelessWidget {
@@ -22,26 +21,29 @@ class SearchResultsScreen extends StatelessWidget {
           List<Breed> filteredBreeds = model.filteredBreedsList;
           return Scaffold(
             appBar: AppBar(
+              iconTheme: IconThemeData(color: Colors.black),
               elevation: 0,
               backgroundColor: Colors.transparent,
             ),
             backgroundColor: Styles.mainBackground,
             body: Column(
               children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 16.0),
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        return DogCard(
-                          breed: filteredBreeds[index],
-                        );
-                      },
-                      itemCount: model.filteredBreedsList.length,
-                    ),
-                  ),
-                ),
+                model.filteredBreedsList.length > 0
+                    ? Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              return DogCard(
+                                breed: filteredBreeds[index],
+                              );
+                            },
+                            itemCount: model.filteredBreedsList.length,
+                          ),
+                        ),
+                      )
+                    : Text('NO'),
               ],
             ),
           );

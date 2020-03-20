@@ -1,9 +1,9 @@
 import 'dart:collection';
 
-import 'package:doglover/data/source/breeds_repository.dart';
+import 'package:doglover/data/repository/breeds_repository.dart';
 import 'package:doglover/viewmodel/base_view_model.dart';
 import 'package:doglover/widgets/expanded_list/entry.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/breed.dart';

@@ -5,6 +5,6 @@ class AccountsRemoteDataSource implements AccountDataSource {
 
   @override
   Future<bool> isLogged() {
-    return Future.value(true);
+    return Future.value(false);
   }
 }

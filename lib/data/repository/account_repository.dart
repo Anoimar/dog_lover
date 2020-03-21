@@ -7,6 +7,6 @@ class AccountRepository implements AccountDataSource {
 
   @override
   Future<bool> isLogged() {
-    return null;
+    return _accountDataSource.isLogged();
   }
 }

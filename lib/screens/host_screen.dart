@@ -1,6 +1,8 @@
+import 'package:doglover/data/repository/account_repository.dart';
 import 'package:doglover/screens/account_screen.dart';
 import 'package:doglover/screens/breed_groups_screen.dart';
 import 'package:doglover/screens/favourites_screen.dart';
+import 'package:doglover/screens/login_screen.dart';
 import 'package:doglover/widgets/bottomnavigation/bottom_navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,13 +19,15 @@ class _HostScreenState extends State<HostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<BottomNavigationBarProvider>(context);
+    var bottomNavigationProvider =
+        Provider.of<BottomNavigationBarProvider>(context);
+    var accountRepository = Provider.of<AccountRepository>(context);
     return Scaffold(
-      body: currentTab[provider.currentIndex],
+      body: currentTab[bottomNavigationProvider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: provider.currentIndex,
+        currentIndex: bottomNavigationProvider.currentIndex,
         onTap: (index) {
-          provider.currentIndex = index;
+          bottomBarTapped(accountRepository, bottomNavigationProvider, index);
         },
         items: [
           BottomNavigationBarItem(
@@ -35,5 +39,17 @@ class _HostScreenState extends State<HostScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> bottomBarTapped(
+      AccountRepository accountRepository,
+      BottomNavigationBarProvider bottomNavigationBarProvider,
+      int index) async {
+    var isLogged = await accountRepository.isLogged();
+    if (isLogged || (index == 0)) {
+      bottomNavigationBarProvider.currentIndex = index;
+    } else {
+      Navigator.pushNamed(context, LoginScreen.id);
+    }
   }
 }

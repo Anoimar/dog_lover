@@ -4,6 +4,7 @@ import 'package:doglover/models/breed.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/breed_details_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
+import 'package:doglover/widgets/appbar/app_bar_builder.dart';
 import 'package:flutter/material.dart';
 
 class BreedScreen extends StatelessWidget {
@@ -17,11 +18,7 @@ class BreedScreen extends StatelessWidget {
         builder: (BreedDetailsViewModel model) {
           model.breedSelected(selectedId);
           return Scaffold(
-              appBar: AppBar(
-                iconTheme: IconThemeData(color: Colors.black),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-              ),
+              appBar: AppBarBuilder.createTransparentAppBar(),
               backgroundColor: Styles.mainBackground,
               extendBodyBehindAppBar: true,
               body: Container(

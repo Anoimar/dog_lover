@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 abstract class Styles {
   static const Color primaryDark = Color.fromARGB(255, 91, 58, 39);
+  static const Color buttonColor = Color.fromARGB(255, 91, 58, 39);
   static const Color mainBackground = Color.fromARGB(255, 245, 234, 215);
   static const Color quincy = Color.fromARGB(255, 93, 60, 44);
   static const Color eunry = Color.fromARGB(255, 205, 167, 161);

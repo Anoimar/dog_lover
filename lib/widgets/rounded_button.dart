@@ -19,7 +19,7 @@ class RoundedButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Text(
           buttonText,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
       ),
     );

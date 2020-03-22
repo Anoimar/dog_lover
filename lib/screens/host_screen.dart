@@ -3,6 +3,7 @@ import 'package:doglover/screens/account_screen.dart';
 import 'package:doglover/screens/breed_groups_screen.dart';
 import 'package:doglover/screens/favourites_screen.dart';
 import 'package:doglover/screens/login_screen.dart';
+import 'package:doglover/styles.dart';
 import 'package:doglover/widgets/bottomnavigation/bottom_navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class _HostScreenState extends State<HostScreen> {
     return Scaffold(
       body: currentTab[bottomNavigationProvider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Styles.quincy,
         currentIndex: bottomNavigationProvider.currentIndex,
         onTap: (index) {
           bottomBarTapped(accountRepository, bottomNavigationProvider, index);

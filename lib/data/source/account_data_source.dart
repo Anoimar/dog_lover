@@ -1,3 +1,7 @@
+import 'package:doglover/data/source/login_result.dart';
+
 abstract class AccountDataSource {
-  Future<bool> isLogged();
+  bool isLogged();
+
+  Future<LoginResult> logIn();
 }

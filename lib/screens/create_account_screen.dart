@@ -1,28 +1,26 @@
-import 'package:doglover/data/source/login_result.dart';
-import 'package:doglover/screens/create_account_screen.dart';
 import 'package:doglover/styles.dart';
-import 'package:doglover/viewmodel/login_view_model.dart';
+import 'package:doglover/viewmodel/create_account_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
 import 'package:doglover/widgets/appbar/app_bar_builder.dart';
 import 'package:doglover/widgets/form_input_card.dart';
 import 'package:doglover/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String id = 'login_screen';
+class CreateAccountScreen extends StatefulWidget {
+  static const String id = 'create_account_screen';
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _CreateAccountScreenState createState() => _CreateAccountScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<LoginViewModel>(
-      model: LoginViewModel(context),
-      builder: (LoginViewModel model) {
+    return ViewModelProvider<CreateAccountViewModel>(
+      model: CreateAccountViewModel(context),
+      builder: (CreateAccountViewModel model) {
         return Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppBarBuilder.createTransparentAppBar(),
@@ -60,24 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: RoundedButton(
                         buttonColor: Styles.eunry,
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            var result = await model.logIn();
-                            if (result == LoginResult.success) {
-                              Navigator.pop(context);
-                            }
-                          }
-                        },
-                        buttonText: 'LOG  IN',
+                        onPressed: () {},
+                        buttonText: 'REGISTER',
                       ),
                     ),
-                    RoundedButton(
-                      buttonColor: Colors.black,
-                      onPressed: () {
-                        Navigator.pushNamed(context, CreateAccountScreen.id);
-                      },
-                      buttonText: 'SIGN UP',
-                    )
                   ],
                 ),
               ),

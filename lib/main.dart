@@ -4,6 +4,7 @@ import 'package:doglover/data/repository/breeds_repository.dart';
 import 'package:doglover/data/source/remote/account_remote_data_source.dart';
 import 'package:doglover/data/source/remote/breeds_remote_data_source.dart';
 import 'package:doglover/screens/breed_screen.dart';
+import 'package:doglover/screens/create_account_screen.dart';
 import 'package:doglover/screens/host_screen.dart';
 import 'package:doglover/screens/login_screen.dart';
 import 'package:doglover/screens/search_results_screen.dart';
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
             HostScreen.id: (context) => HostScreen(),
             BreedScreen.id: (context) => BreedScreen(),
             SearchResultsScreen.id: (context) => SearchResultsScreen(),
-            LoginScreen.id: (context) => LoginScreen()
+            LoginScreen.id: (context) => LoginScreen(),
+            CreateAccountScreen.id: (context) => CreateAccountScreen()
           }),
     );
   }

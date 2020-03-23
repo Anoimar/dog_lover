@@ -43,11 +43,9 @@ class _HostScreenState extends State<HostScreen> {
     );
   }
 
-  Future<void> bottomBarTapped(
-      AccountRepository accountRepository,
-      BottomNavigationBarProvider bottomNavigationBarProvider,
-      int index) async {
-    var isLogged = await accountRepository.isLogged();
+  bottomBarTapped(AccountRepository accountRepository,
+      BottomNavigationBarProvider bottomNavigationBarProvider, int index) {
+    var isLogged = accountRepository.isLogged();
     if (isLogged || (index == 0)) {
       bottomNavigationBarProvider.currentIndex = index;
     } else {

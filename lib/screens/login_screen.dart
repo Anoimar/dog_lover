@@ -51,7 +51,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(
                               height: 12.0,
                             ),
-                            FormInputCard(Icons.lock, 'Your password'),
+                            FormInputCard(
+                              Icons.lock,
+                              'Your password',
+                              isObscured: true,
+                            ),
                           ],
                         ),
                       ),

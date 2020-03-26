@@ -23,6 +23,8 @@ dependencies:
   provider: ^3.0.0+1
   cached_network_image: ^2.0.0
   cupertino_icons: ^0.1.2
+  firebase_core: ^0.4.4+3
+  firebase_auth: ^0.15.5+3
 
 dev_dependencies:
   flutter_test:

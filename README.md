@@ -2,15 +2,10 @@
 
 App for Dog Lovers
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## About project
+WIP
+App for people who love dogs just us I do. Planned to make one for more than a year.
+After doing the amazing course by Angela Yu on Udemy I decided that it will be fun to do it in flutter instead of normal Android.
+To run the project you need to
+1) get api key from https://thedogapi.com and provide in  dog_api_service.dart
+2) add firebase auth https://firebase.google.com/docs/flutter/setup

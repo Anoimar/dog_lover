@@ -17,6 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _email;
+  String _password;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            FormInputCard(Icons.person, 'Your email'),
+                            FormInputCard(
+                              Icons.person,
+                              'Your email',
+                              validation: (email) {
+                                if (!RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(email)) {
+                                  return 'Email not correct';
+                                }
+                                return null;
+                              },
+                              getText: (String value) {
+                                setState(() {
+                                  _email = value.trim();
+                                });
+                              },
+                            ),
                             SizedBox(
                               height: 12.0,
                             ),
@@ -55,6 +73,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               Icons.lock,
                               'Your password',
                               isObscured: true,
+                              getText: (String value) {
+                                setState(() {
+                                  _password = value.trim();
+                                });
+                              },
                             ),
                           ],
                         ),
@@ -66,9 +89,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         buttonColor: Styles.eunry,
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
-                            var result = await model.logIn();
-                            if (result == LoginResult.success) {
-                              Navigator.pop(context);
+                            _formKey.currentState.save();
+                            var result = await model.logIn(_email, _password);
+                            switch (result) {
+                              case LoginResult.success:
+                                Navigator.pop(context);
+                                break;
+                              case LoginResult.failure:
+                                showFailedLoginDialog(
+                                    context, 'Failed to login');
+                                break;
+                              case LoginResult.user_not_found:
+                                showFailedLoginDialog(
+                                    context, 'User doesn\'t exist');
+                                break;
+                              case LoginResult.wrong_password:
+                                showFailedLoginDialog(
+                                    context, 'Password is wrong');
+                                break;
                             }
                           }
                         },
@@ -89,6 +127,42 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       },
+    );
+  }
+
+  void showFailedLoginDialog(BuildContext context, String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return DLAlertDialog(
+            title: 'Login failed',
+            text: message,
+            onConfirmed: () {
+              Navigator.of(context).pop();
+            },
+          );
+        });
+  }
+}
+
+class DLAlertDialog extends StatelessWidget {
+  final String title;
+  final String text;
+  final Function onConfirmed;
+
+  const DLAlertDialog({this.title, this.text, this.onConfirmed});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(text),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: onConfirmed,
+          child: Text('OK'),
+        )
+      ],
     );
   }
 }

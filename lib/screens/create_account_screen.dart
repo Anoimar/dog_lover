@@ -4,7 +4,6 @@ import 'package:doglover/viewmodel/view_model_provider.dart';
 import 'package:doglover/widgets/appbar/app_bar_builder.dart';
 import 'package:doglover/widgets/form_input_card.dart';
 import 'package:doglover/widgets/rounded_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -46,7 +45,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            FormInputCard(Icons.person, 'Your email'),
+                            FormInputCard(
+                              Icons.person,
+                              'Your email',
+                              getText: (value) {
+                                print(value);
+                              },
+                            ),
                             SizedBox(
                               height: 12.0,
                             ),
@@ -71,8 +76,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: RoundedButton(
                         buttonColor: Styles.eunry,
-                        onPressed: () {
-                        },
+                        onPressed: () {},
                         buttonText: 'REGISTER',
                       ),
                     ),

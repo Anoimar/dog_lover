@@ -8,9 +8,12 @@ class AccountRepository implements AccountDataSource {
   AccountRepository(this._accountDataSource);
 
   @override
-  Future<LoginResult> logIn() {
-    _isLogged = true;
-    return _accountDataSource.logIn();
+  Future<LoginResult> logIn(String email, String password) async {
+    var result = await _accountDataSource.logIn(email, password);
+    if (result == LoginResult.success) {
+      _isLogged = true;
+    }
+    return Future.value(result);
   }
 
   @override

@@ -1,7 +1,10 @@
+import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/styles.dart';
+import 'package:doglover/validator.dart';
 import 'package:doglover/viewmodel/create_account_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
 import 'package:doglover/widgets/appbar/app_bar_builder.dart';
+import 'package:doglover/widgets/dialogs/dl_alert_dialog.dart';
 import 'package:doglover/widgets/form_input_card.dart';
 import 'package:doglover/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +18,10 @@ class CreateAccountScreen extends StatefulWidget {
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String _email;
+  String _password;
+  String _passwordRetype;
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +55,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             FormInputCard(
                               Icons.person,
                               'Your email',
-                              getText: (value) {
-                                print(value);
+                              validation: Validator.emailValidation,
+                              getText: (String value) {
+                                setState(() {
+                                  _email = value.trim();
+                                });
                               },
                             ),
                             SizedBox(
@@ -59,6 +69,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               Icons.lock,
                               'Your password',
                               isObscured: true,
+                              getText: (String value) {
+                                setState(() {
+                                  _password = value.trim();
+                                });
+                              },
                             ),
                             SizedBox(
                               height: 12.0,
@@ -67,6 +82,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               Icons.lock,
                               'Retype password',
                               isObscured: true,
+                              getText: (String value) {
+                                setState(() {
+                                  _passwordRetype = value.trim();
+                                });
+                              },
                             ),
                           ],
                         ),
@@ -76,7 +96,29 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: RoundedButton(
                         buttonColor: Styles.eunry,
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            var result = await model.signUp(_email, _password);
+                            switch (result) {
+                              case SignUpResult.success:
+                                showCreateAccountSuccessDialog(context);
+                                break;
+                              case SignUpResult.failure:
+                                showSignUpFailedDialog(context,
+                                    'We couldn\'t create account for you. Try again later or contact our support');
+                                break;
+                              case SignUpResult.password_insufficient:
+                                showSignUpFailedDialog(context,
+                                    'Your password seems to weak. Try something longer and more difficult too guess');
+                                break;
+                              case SignUpResult.user_exist:
+                                showSignUpFailedDialog(context,
+                                    'The user with this email is already registered.');
+                                break;
+                            }
+                          }
+                        },
                         buttonText: 'REGISTER',
                       ),
                     ),
@@ -88,5 +130,33 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         );
       },
     );
+  }
+
+  void showSignUpFailedDialog(BuildContext context, String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return DLAlertDialog(
+            title: 'Sign Up Failed',
+            text: message,
+            onConfirmed: () {
+              Navigator.of(context).pop();
+            },
+          );
+        });
+  }
+
+  void showCreateAccountSuccessDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return DLAlertDialog(
+            title: 'Account created',
+            text: 'You can now log in with your new account!',
+            onConfirmed: () {
+              Navigator.of(context).pop();
+            },
+          );
+        });
   }
 }

@@ -1,5 +1,5 @@
 import 'package:doglover/data/source/account_data_source.dart';
-import 'package:doglover/data/source/login_result.dart';
+import 'package:doglover/data/source/firebase_results.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -18,7 +18,6 @@ class AccountsRemoteDataSource implements AccountDataSource {
     try {
       var result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      print(result);
       if (result != null) {
         return Future.value(LoginResult.success);
       }
@@ -31,5 +30,24 @@ class AccountsRemoteDataSource implements AccountDataSource {
       }
     } catch (e) {}
     return Future.value(LoginResult.failure);
+  }
+
+  @override
+  Future<SignUpResult> signUp(String email, String password) async {
+    try {
+      var result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      if (result != null) {
+        return Future.value(SignUpResult.success);
+      }
+    } on PlatformException catch (e) {
+      if (e.code == 'ERROR_WEAK_PASSWORD') {
+        return Future.value(SignUpResult.password_insufficient);
+      }
+      if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+        return Future.value(SignUpResult.user_exist);
+      }
+    } catch (e) {}
+    return Future.value(SignUpResult.failure);
   }
 }

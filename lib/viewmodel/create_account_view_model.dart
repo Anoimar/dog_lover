@@ -1,4 +1,5 @@
 import 'package:doglover/data/repository/account_repository.dart';
+import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/viewmodel/base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,5 +10,11 @@ class CreateAccountViewModel extends BaseViewModel {
 
   CreateAccountViewModel(this.context) {
     _accountRepository = Provider.of<AccountRepository>(context);
+  }
+
+  Future<SignUpResult> signUp(String email, String password) {
+    return _accountRepository.signUp(email, password).whenComplete(() {
+      print('complete');
+    });
   }
 }

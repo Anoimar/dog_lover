@@ -1,11 +1,14 @@
-import 'package:doglover/data/source/login_result.dart';
+import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/screens/create_account_screen.dart';
 import 'package:doglover/styles.dart';
+import 'package:doglover/validator.dart';
 import 'package:doglover/viewmodel/login_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
 import 'package:doglover/viewmodel/view_state.dart';
 import 'package:doglover/widgets/appbar/app_bar_builder.dart';
+import 'package:doglover/widgets/dialogs/dl_alert_dialog.dart';
 import 'package:doglover/widgets/form_input_card.dart';
+import 'package:doglover/widgets/loading_view.dart';
 import 'package:doglover/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
@@ -55,14 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 FormInputCard(
                                   Icons.person,
                                   'Your email',
-                                  validation: (email) {
-                                    if (!RegExp(
-                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                        .hasMatch(email)) {
-                                      return 'Email not correct';
-                                    }
-                                    return null;
-                                  },
+                                  validation: Validator.emailValidation,
                                   getText: (String value) {
                                     setState(() {
                                       _email = value.trim();
@@ -150,40 +146,5 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           );
         });
-  }
-}
-
-class LoadingView extends StatelessWidget {
-  final bool isVisible;
-
-  const LoadingView(this.isVisible);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: Color.fromARGB(150, 211, 211, 211),
-        height: !isVisible ? 0 : null);
-  }
-}
-
-class DLAlertDialog extends StatelessWidget {
-  final String title;
-  final String text;
-  final Function onConfirmed;
-
-  const DLAlertDialog({this.title, this.text, this.onConfirmed});
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(title),
-      content: Text(text),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: onConfirmed,
-          child: Text('OK'),
-        )
-      ],
-    );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:doglover/data/repository/account_repository.dart';
-import 'package:doglover/data/source/login_result.dart';
+import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/viewmodel/base_view_model.dart';
 import 'package:doglover/viewmodel/view_state.dart';
 import 'package:flutter/material.dart';

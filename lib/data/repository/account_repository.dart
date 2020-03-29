@@ -1,5 +1,5 @@
 import 'package:doglover/data/source/account_data_source.dart';
-import 'package:doglover/data/source/login_result.dart';
+import 'package:doglover/data/source/firebase_results.dart';
 
 class AccountRepository implements AccountDataSource {
   final AccountDataSource _accountDataSource;
@@ -14,6 +14,11 @@ class AccountRepository implements AccountDataSource {
       _isLogged = true;
     }
     return Future.value(result);
+  }
+
+  @override
+  Future<SignUpResult> signUp(String email, String password) {
+    return _accountDataSource.signUp(email, password);
   }
 
   @override

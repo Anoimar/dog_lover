@@ -94,7 +94,8 @@ class BreedDetails extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 16.0),
                       child: DogTraitColumn(
                         traitName: 'Temperament',
-                        value: breed.temperament,
+                        value:
+                            breed.temperament != null ? breed.temperament : '?',
                       ),
                     ),
                   ),

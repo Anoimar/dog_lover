@@ -24,6 +24,9 @@ class FormInputCard extends StatelessWidget {
             if (input.isEmpty) {
               return "Field can't be empty";
             }
+            if (validation == null) {
+              return null;
+            }
             String error = validation(input);
             return error;
           },

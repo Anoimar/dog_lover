@@ -1,5 +1,6 @@
 import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/screens/create_account_screen.dart';
+import 'package:doglover/screens/reset_password_screen.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/validator.dart';
 import 'package:doglover/viewmodel/login_view_model.dart';
@@ -42,20 +43,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       fit: BoxFit.cover),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 64),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Form(
-                          key: _formKey,
-                          child: Flexible(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                FormInputCard(
+                  padding: const EdgeInsets.only(top: 64),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Form(
+                        key: _formKey,
+                        child: Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 32.0),
+                                child: FormInputCard(
                                   Icons.person,
                                   'Your email',
                                   validation: Validator.emailValidation,
@@ -65,10 +67,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     });
                                   },
                                 ),
-                                SizedBox(
-                                  height: 12.0,
-                                ),
-                                FormInputCard(
+                              ),
+                              SizedBox(
+                                height: 12.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 32.0),
+                                child: FormInputCard(
                                   Icons.lock,
                                   'Your password',
                                   isObscured: true,
@@ -78,51 +84,87 @@ class _LoginScreenState extends State<LoginScreen> {
                                     });
                                   },
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+                          color: Styles.mainBackground,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 32.0),
+                                  child: RoundedButton(
+                                    buttonColor: Styles.eunry,
+                                    onPressed: () async {
+                                      if (_formKey.currentState.validate()) {
+                                        _formKey.currentState.save();
+                                        var result = await model.logIn(
+                                            _email, _password);
+                                        switch (result) {
+                                          case LoginResult.success:
+                                            Navigator.pop(context);
+                                            break;
+                                          case LoginResult.failure:
+                                            showFailedLoginDialog(
+                                                context, 'Failed to login');
+                                            break;
+                                          case LoginResult.user_not_found:
+                                            showFailedLoginDialog(
+                                                context, 'User doesn\'t exist');
+                                            break;
+                                          case LoginResult.wrong_password:
+                                            showFailedLoginDialog(
+                                                context, 'Password is wrong');
+                                            break;
+                                        }
+                                      }
+                                    },
+                                    buttonText: 'LOG  IN',
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 32.0),
+                                  child: RoundedButton(
+                                    buttonColor: Colors.black,
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, CreateAccountScreen.id);
+                                    },
+                                    buttonText: 'SIGN UP',
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Center(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, ResetPasswordScreen.id);
+                                      },
+                                      child: Text(
+                                        'Forgot your password?',
+                                        style: TextStyle(color: Styles.quincy),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: RoundedButton(
-                            buttonColor: Styles.eunry,
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                _formKey.currentState.save();
-                                var result =
-                                    await model.logIn(_email, _password);
-                                switch (result) {
-                                  case LoginResult.success:
-                                    Navigator.pop(context);
-                                    break;
-                                  case LoginResult.failure:
-                                    showFailedLoginDialog(
-                                        context, 'Failed to login');
-                                    break;
-                                  case LoginResult.user_not_found:
-                                    showFailedLoginDialog(
-                                        context, 'User doesn\'t exist');
-                                    break;
-                                  case LoginResult.wrong_password:
-                                    showFailedLoginDialog(
-                                        context, 'Password is wrong');
-                                    break;
-                                }
-                              }
-                            },
-                            buttonText: 'LOG  IN',
-                          ),
-                        ),
-                        RoundedButton(
-                          buttonColor: Colors.black,
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, CreateAccountScreen.id);
-                          },
-                          buttonText: 'SIGN UP',
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),

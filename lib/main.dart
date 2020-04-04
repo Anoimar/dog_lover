@@ -7,6 +7,7 @@ import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/screens/create_account_screen.dart';
 import 'package:doglover/screens/host_screen.dart';
 import 'package:doglover/screens/login_screen.dart';
+import 'package:doglover/screens/reset_password_screen.dart';
 import 'package:doglover/screens/search_results_screen.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/widgets/bottomnavigation/bottom_navigation_provider.dart';
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
             BreedScreen.id: (context) => BreedScreen(),
             SearchResultsScreen.id: (context) => SearchResultsScreen(),
             LoginScreen.id: (context) => LoginScreen(),
-            CreateAccountScreen.id: (context) => CreateAccountScreen()
+            CreateAccountScreen.id: (context) => CreateAccountScreen(),
+            ResetPasswordScreen.id: (context) => ResetPasswordScreen()
           }),
     );
   }

@@ -50,4 +50,18 @@ class AccountsRemoteDataSource implements AccountDataSource {
     } catch (e) {}
     return Future.value(SignUpResult.failure);
   }
+
+  @override
+  Future<ResetPasswordResult> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on PlatformException catch (e) {
+      if (e.code == 'ERROR_USER_NOT_FOUND') {
+        return Future.value(ResetPasswordResult.email_not_found);
+      }
+    } catch (e) {
+      return Future.value(ResetPasswordResult.failure);
+    }
+    return Future.value(ResetPasswordResult.success);
+  }
 }

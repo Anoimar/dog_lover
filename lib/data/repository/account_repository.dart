@@ -22,6 +22,11 @@ class AccountRepository implements AccountDataSource {
   }
 
   @override
+  Future<ResetPasswordResult> resetPassword(String email) {
+    return _accountDataSource.resetPassword(email);
+  }
+
+  @override
   bool isLogged() {
     return _isLogged;
   }

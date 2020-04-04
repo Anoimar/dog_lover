@@ -6,4 +6,6 @@ abstract class AccountDataSource {
   Future<LoginResult> logIn(String email, String password);
 
   Future<SignUpResult> signUp(String email, String password);
+
+  Future<ResetPasswordResult> resetPassword(String email);
 }

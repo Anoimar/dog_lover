@@ -16,9 +16,9 @@ class CreateAccountViewModel extends BaseViewModel {
     _accountRepository = Provider.of<AccountRepository>(context);
   }
 
-  Future<SignUpResult> signUp(String email, String password) {
+  Future<SignUpResult> signUp(String email, String password, String name) {
     _viewState = ViewState.loading;
-    return _accountRepository.signUp(email, password).whenComplete(() {
+    return _accountRepository.signUp(email, password, name).whenComplete(() {
       _viewState = ViewState.content;
       notifyListeners();
     });

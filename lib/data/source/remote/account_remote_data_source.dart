@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doglover/data/source/account_data_source.dart';
 import 'package:doglover/data/source/firebase_results.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +8,7 @@ class AccountsRemoteDataSource implements AccountDataSource {
   AccountsRemoteDataSource();
 
   final _auth = FirebaseAuth.instance;
+  final _firestore = Firestore.instance;
 
   @override
   bool isLogged() {
@@ -33,21 +35,28 @@ class AccountsRemoteDataSource implements AccountDataSource {
   }
 
   @override
-  Future<SignUpResult> signUp(String email, String password) async {
+  Future<SignUpResult> signUp(
+      String email, String password, String name) async {
     try {
-      var result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      if (result != null) {
-        return Future.value(SignUpResult.success);
-      }
+      await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((createResult) {
+        _firestore
+            .collection('user')
+            .add({'user_email': email, 'name': name, 'dogs': ''});
+      });
+      return Future.value(SignUpResult.success);
     } on PlatformException catch (e) {
+      print(e);
       if (e.code == 'ERROR_WEAK_PASSWORD') {
         return Future.value(SignUpResult.password_insufficient);
       }
       if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
         return Future.value(SignUpResult.user_exist);
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return Future.value(SignUpResult.failure);
   }
 

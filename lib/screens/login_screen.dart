@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 32.0),
                                 child: FormInputCard(
-                                  Icons.person,
+                                  Icons.email,
                                   'Your email',
                                   validation: Validator.emailValidation,
                                   getText: (String value) {

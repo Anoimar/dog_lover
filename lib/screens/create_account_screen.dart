@@ -25,7 +25,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   String _email;
   String _password;
-  String _passwordRetype;
+  String _name;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +60,18 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               children: <Widget>[
                                 FormInputCard(
                                   Icons.person,
+                                  'Your name',
+                                  getText: (String value) {
+                                    setState(() {
+                                      _name = value.trim();
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 12.0,
+                                ),
+                                FormInputCard(
+                                  Icons.mail,
                                   'Your email',
                                   validation: Validator.emailValidation,
                                   getText: (String value) {
@@ -95,11 +107,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                         ? null
                                         : "Password doesn\'t match";
                                   },
-                                  getText: (String value) {
-                                    setState(() {
-                                      _passwordRetype = value.trim();
-                                    });
-                                  },
                                 ),
                               ],
                             ),
@@ -112,8 +119,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-                                var result =
-                                    await model.signUp(_email, _password);
+                                var result = await model.signUp(
+                                    _email, _password, _name);
                                 switch (result) {
                                   case SignUpResult.success:
                                     showCreateAccountSuccessDialog(context);

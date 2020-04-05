@@ -41,68 +41,65 @@ class BreedDetails extends StatelessWidget {
         child: buildImage(model),
         flex: 1,
       ),
-      Flexible(
-        flex: 1,
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0),
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 0),
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 50.0,
-                  ),
-                  Text(
-                    breed.name,
-                    style: kMediumLabelStyle,
-                  ),
-                  SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: FloatingActionButton(
-                      backgroundColor: Styles.primaryDark,
-                      child: Icon(
-                        Icons.favorite,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              DogTraitRow(
-                firstTrait: 'Bred for:',
-                firstTraitValue: breed.bredFor != null ? breed.bredFor : '',
-                secondTrait: 'Breed group:',
-                secondTraitValue: breed.group,
-              ),
-              DogTraitRow(
-                firstTrait: "Weight:",
-                firstTraitValue: '${breed.weight} kg',
-                secondTrait: "Height:",
-                secondTraitValue: '${breed.height} cm',
-              ),
-              DogTraitRow(
-                firstTrait: 'Life expectancy:',
-                firstTraitValue: breed.lifeExpectancy,
-                secondTrait: 'Origin:',
-                secondTraitValue: breed.origin != null ? breed.origin : '?',
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: DogTraitColumn(
-                        traitName: 'Temperament',
-                        value:
-                            breed.temperament != null ? breed.temperament : '?',
-                      ),
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 50.0,
+                ),
+                Text(
+                  breed.name,
+                  style: kMediumLabelStyle,
+                ),
+                SizedBox(
+                  width: 50.0,
+                  height: 50.0,
+                  child: FloatingActionButton(
+                    backgroundColor: Styles.primaryDark,
+                    child: Icon(
+                      Icons.favorite,
                     ),
                   ),
-                ],
-              )
-            ]),
-          ),
+                )
+              ],
+            ),
+            DogTraitRow(
+              firstTrait: 'Bred for:',
+              firstTraitValue: breed.bredFor != null ? breed.bredFor : '',
+              secondTrait: 'Breed group:',
+              secondTraitValue: breed.group,
+            ),
+            DogTraitRow(
+              firstTrait: "Weight:",
+              firstTraitValue: '${breed.weight} kg',
+              secondTrait: "Height:",
+              secondTraitValue: '${breed.height} cm',
+            ),
+            DogTraitRow(
+              firstTrait: 'Life expectancy:',
+              firstTraitValue: breed.lifeExpectancy,
+              secondTrait: 'Origin:',
+              secondTraitValue: breed.origin != null ? breed.origin : '?',
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: DogTraitColumn(
+                      traitName: 'Temperament',
+                      value:
+                          breed.temperament != null ? breed.temperament : '?',
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ]),
         ),
       ),
     ]);

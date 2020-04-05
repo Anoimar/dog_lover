@@ -41,61 +41,60 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       fit: BoxFit.cover),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 64),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Form(
-                          key: _formKey,
-                          child: Flexible(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                FormInputCard(
-                                  Icons.person,
-                                  'Your email',
-                                  validation: Validator.emailValidation,
-                                  getText: (String value) {
-                                    setState(() {
-                                      _email = value.trim();
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
+                  padding: const EdgeInsets.fromLTRB(32.0, 0, 32, 64),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Form(
+                        key: _formKey,
+                        child: Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              FormInputCard(
+                                Icons.email,
+                                'Your email',
+                                validation: Validator.emailValidation,
+                                getText: (String value) {
+                                  setState(() {
+                                    _email = value.trim();
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                height: 128,
+                              )
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: RoundedButton(
-                            buttonColor: Styles.eunry,
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                _formKey.currentState.save();
-                                var result = await model.reset(_email);
-                                switch (result) {
-                                  case ResetPasswordResult.success:
-                                    showPasswordResetSuccessDialog(context);
-                                    break;
-                                  case ResetPasswordResult.failure:
-                                    showResetFailedDialog(
-                                        context, 'Password reset failed');
-                                    break;
-                                  case ResetPasswordResult.email_not_found:
-                                    showResetFailedDialog(context,
-                                        'User with this email doesn\'t exist');
-                                    break;
-                                }
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: RoundedButton(
+                          buttonColor: Styles.eunry,
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              var result = await model.reset(_email);
+                              switch (result) {
+                                case ResetPasswordResult.success:
+                                  showPasswordResetSuccessDialog(context);
+                                  break;
+                                case ResetPasswordResult.failure:
+                                  showResetFailedDialog(
+                                      context, 'Password reset failed');
+                                  break;
+                                case ResetPasswordResult.email_not_found:
+                                  showResetFailedDialog(context,
+                                      'User with this email doesn\'t exist');
+                                  break;
                               }
-                            },
-                            buttonText: 'RESET',
-                          ),
+                            }
+                          },
+                          buttonText: 'RESET',
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -17,8 +17,8 @@ class AccountRepository implements AccountDataSource {
   }
 
   @override
-  Future<SignUpResult> signUp(String email, String password) {
-    return _accountDataSource.signUp(email, password);
+  Future<SignUpResult> signUp(String email, String password, String name) {
+    return _accountDataSource.signUp(email, password, name);
   }
 
   @override

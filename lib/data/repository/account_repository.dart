@@ -1,5 +1,6 @@
 import 'package:doglover/data/source/account_data_source.dart';
 import 'package:doglover/data/source/firebase_results.dart';
+import 'package:doglover/models/account.dart';
 
 class AccountRepository implements AccountDataSource {
   final AccountDataSource _accountDataSource;
@@ -29,5 +30,10 @@ class AccountRepository implements AccountDataSource {
   @override
   bool isLogged() {
     return _isLogged;
+  }
+
+  @override
+  Future<Account> getAccount() {
+    return _accountDataSource.getAccount();
   }
 }

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doglover/data/source/account_data_source.dart';
 import 'package:doglover/data/source/firebase_results.dart';
+import 'package:doglover/data/source/firebase_store_keys.dart';
+import 'package:doglover/models/account.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -40,10 +42,15 @@ class AccountsRemoteDataSource implements AccountDataSource {
     try {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((createResult) {
-        _firestore
-            .collection('user')
-            .add({'user_email': email, 'name': name, 'dogs': ''});
+          .then((createResult) async {
+        UserUpdateInfo info = UserUpdateInfo();
+        info.displayName = name;
+        await createResult.user.updateProfile(info);
+        _firestore.collection('user').add({
+          FirebaseStoreKeys.accountEmail: email,
+          FirebaseStoreKeys.accountName: name,
+          FirebaseStoreKeys.accountDogs: ''
+        });
       });
       return Future.value(SignUpResult.success);
     } on PlatformException catch (e) {
@@ -72,5 +79,11 @@ class AccountsRemoteDataSource implements AccountDataSource {
       return Future.value(ResetPasswordResult.failure);
     }
     return Future.value(ResetPasswordResult.success);
+  }
+
+  @override
+  Future<Account> getAccount() async {
+    FirebaseUser user = await _auth.currentUser();
+    return Future.value(Account(user.displayName, user.email, ''));
   }
 }

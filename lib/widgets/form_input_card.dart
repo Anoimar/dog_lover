@@ -10,7 +10,11 @@ class FormInputCard extends StatelessWidget {
   final fieldKey;
 
   FormInputCard(this.icon, this.hintText,
-      {this.isObscured = false, this.getText, this.validation, this.fieldKey});
+      {this.isObscured = false, getText, this.validation, this.fieldKey})
+      : getText = getText ??
+            ((String text) {
+              print(text);
+            });
 
   @override
   Widget build(BuildContext context) {

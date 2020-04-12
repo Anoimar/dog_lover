@@ -16,12 +16,20 @@ class HostScreen extends StatefulWidget {
 }
 
 class _HostScreenState extends State<HostScreen> {
-  var currentTab = [BreedGroupsScreen(), FavouriteScreen(), AccountScreen()];
-
   @override
   Widget build(BuildContext context) {
     var bottomNavigationProvider =
         Provider.of<BottomNavigationBarProvider>(context);
+    var currentTab = [
+      BreedGroupsScreen(),
+      FavouriteScreen(),
+      AccountScreen(
+        onLogOff: () {
+          print('loginig');
+          bottomNavigationProvider.currentIndex = 0;
+        },
+      )
+    ];
     var accountRepository = Provider.of<AccountRepository>(context);
     return Scaffold(
       body: currentTab[bottomNavigationProvider.currentIndex],

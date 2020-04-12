@@ -13,9 +13,10 @@ class AccountsRemoteDataSource implements AccountDataSource {
   final _firestore = Firestore.instance;
 
   @override
-  bool isLogged() {
-    throw ('Not implemented in remote');
-  }
+  bool isLogged() => throw ('Not implemented in remote');
+
+  @override
+  void logOff() => throw ('Not implemented in remote');
 
   @override
   Future<LoginResult> logIn(String email, String password) async {

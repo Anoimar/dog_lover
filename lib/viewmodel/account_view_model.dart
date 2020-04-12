@@ -28,4 +28,8 @@ class AccountViewModel extends BaseViewModel {
     _email = account.email;
     notifyListeners();
   }
+
+  void logOff() {
+    _accountRepository.logOff();
+  }
 }

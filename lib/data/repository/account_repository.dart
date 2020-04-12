@@ -17,6 +17,11 @@ class AccountRepository implements AccountDataSource {
     return Future.value(result);
   }
 
+  //TODO remove method after release
+  set setLogged(bool value) {
+    _isLogged = value;
+  }
+
   @override
   Future<SignUpResult> signUp(String email, String password, String name) {
     return _accountDataSource.signUp(email, password, name);
@@ -30,6 +35,11 @@ class AccountRepository implements AccountDataSource {
   @override
   bool isLogged() {
     return _isLogged;
+  }
+
+  @override
+  void logOff() {
+    _isLogged = false;
   }
 
   @override

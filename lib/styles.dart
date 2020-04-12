@@ -8,6 +8,7 @@ abstract class Styles {
   static const Color mainBackground = Color.fromARGB(255, 245, 234, 215);
   static const Color quincy = Color.fromARGB(255, 93, 60, 44);
   static const Color eunry = Color.fromARGB(255, 205, 167, 161);
+  static const Color almostWhite = Color.fromARGB(255, 234, 234, 232);
 }
 
 const kMediumLabelStyle = TextStyle(

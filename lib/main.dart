@@ -1,7 +1,7 @@
 import 'package:doglover/api/dog_api_service.dart';
 import 'package:doglover/data/repository/account_repository.dart';
 import 'package:doglover/data/repository/breeds_repository.dart';
-import 'package:doglover/data/source/mock/AccountsMockDataSource.dart';
+import 'package:doglover/data/source/mock/acounts_mock_data_source.dart';
 import 'package:doglover/data/source/remote/breeds_remote_data_source.dart';
 import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/screens/create_account_screen.dart';

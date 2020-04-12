@@ -76,7 +76,51 @@ class AccountScreen extends StatelessWidget {
                         ),
                       ),
                       Text(model.email),
-                      Text('My dogs')
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                              child: SizedBox(
+                                height: 2.0,
+                                width: double.infinity,
+                              ),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      colors: [
+                                    Colors.black,
+                                    Styles.almostWhite,
+                                    Colors.white,
+                                    Styles.almostWhite,
+                                    Colors.black
+                                  ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter)),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'My dogs',
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  FlatButton.icon(
+                                    onPressed: () {},
+                                    icon: Text('Add a dog'),
+                                    label: Icon(Icons.add),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),

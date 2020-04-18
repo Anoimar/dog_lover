@@ -118,6 +118,39 @@ class AccountScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            Container(
+                              height: 200.0,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  var dogModel = model.dogs[index];
+                                  return Container(
+                                    height: 180.0,
+                                    width: 150,
+                                    child: InkWell(
+                                      onTap: () => print(dogModel.id),
+                                      child: Card(
+                                        margin:
+                                            EdgeInsets.symmetric(horizontal: 8),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: dogModel.picUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        elevation: 4,
+                                        semanticContainer: true,
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                itemCount: model.dogs.length,
+                              ),
+                            )
                           ],
                         ),
                       ),

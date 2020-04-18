@@ -3,6 +3,7 @@ import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/account_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AccountScreen extends StatelessWidget {
   final Function onLogOff;
@@ -62,11 +63,36 @@ class AccountScreen extends StatelessWidget {
                   alignment: AlignmentDirectional.topCenter,
                   child: Column(
                     children: <Widget>[
-                      CircleAvatar(
-                        radius: avatarRadius,
-                        backgroundImage: CachedNetworkImageProvider(
-                            'https://avatars1.githubusercontent.com/u/7840940?s=460&u=4565e4387d89c3924619ee29edad18e84099557e&v=4'),
-                      ),
+                      Stack(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            radius: avatarRadius,
+                            backgroundImage: model.image != null
+                                ? FileImage(model.image)
+                                : AssetImage('assets/login_background.jpeg'),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 4.0,
+                          right: 4.0,
+                          child: SizedBox(
+                            width: 48.0,
+                            height: 48.0,
+                            child: FloatingActionButton(
+                              onPressed: () async {
+                                var image = await ImagePicker.pickImage(
+                                    source: ImageSource.gallery);
+                                model.imagePicked(image);
+                              },
+                              backgroundColor: Styles.primaryDark,
+                              child: Icon(
+                                Icons.photo_camera,
+                              ),
+                            ),
+                          ),
+                        )
+                      ]),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(

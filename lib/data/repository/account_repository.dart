@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:doglover/data/source/account_data_source.dart';
 import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/models/account.dart';
@@ -45,5 +47,15 @@ class AccountRepository implements AccountDataSource {
   @override
   Future<Account> getAccount() {
     return _accountDataSource.getAccount();
+  }
+
+  @override
+  void uploadUserAvatar(File userAvatar) {
+    _accountDataSource.uploadUserAvatar(userAvatar);
+  }
+
+  @override
+  Future<File> getUserAvatar() {
+    return _accountDataSource.getUserAvatar();
   }
 }

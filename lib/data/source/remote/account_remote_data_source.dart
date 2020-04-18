@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doglover/data/source/account_data_source.dart';
 import 'package:doglover/data/source/firebase_results.dart';
@@ -87,4 +89,10 @@ class AccountsRemoteDataSource implements AccountDataSource {
     FirebaseUser user = await _auth.currentUser();
     return Future.value(Account(user.displayName, user.email, ''));
   }
+
+  @override
+  void uploadUserAvatar(File userAvatar) {}
+
+  @override
+  Future<File> getUserAvatar() {}
 }

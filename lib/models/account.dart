@@ -1,7 +1,7 @@
 class Account {
   final String name;
   final String email;
-  final String dogs;
+  final String imageUrl;
 
-  Account(this.name, this.email, this.dogs);
+  Account(this.name, this.email, this.imageUrl);
 }

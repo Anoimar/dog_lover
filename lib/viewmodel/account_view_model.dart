@@ -1,5 +1,5 @@
 import 'dart:collection';
-
+import 'dart:io';
 import 'package:doglover/data/repository/account_repository.dart';
 import 'package:doglover/data/repository/dogs_repository.dart';
 import 'package:doglover/models/dog.dart';
@@ -12,9 +12,10 @@ class AccountViewModel extends BaseViewModel {
   final BuildContext context;
   String _name = '';
   String _email = '';
+  File _image;
 
   String get email => _email;
-
+  File get image => _image;
   String get name => _name;
 
   List<Dog> _dogs = [];
@@ -39,11 +40,22 @@ class AccountViewModel extends BaseViewModel {
     var account = await _accountRepository.getAccount();
     _name = account.name;
     _email = account.email;
+    downloadUserImage();
     _dogs = await _dogsRepository.loadDogs();
+    notifyListeners();
+  }
+
+  void imagePicked(File newImage) {
+    _image = newImage;
+    _accountRepository.uploadUserAvatar(newImage);
     notifyListeners();
   }
 
   void logOff() {
     _accountRepository.logOff();
+  }
+
+  Future<void> downloadUserImage() async {
+    _image = await _accountRepository.getUserAvatar();
   }
 }

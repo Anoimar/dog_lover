@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/models/account.dart';
 
@@ -13,4 +15,8 @@ abstract class AccountDataSource {
   Future<ResetPasswordResult> resetPassword(String email);
 
   Future<Account> getAccount();
+
+  Future<File> getUserAvatar();
+
+  void uploadUserAvatar(File userAvatar);
 }

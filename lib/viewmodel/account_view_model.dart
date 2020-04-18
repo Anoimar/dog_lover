@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+
 import 'package:doglover/data/repository/account_repository.dart';
 import 'package:doglover/data/repository/dogs_repository.dart';
 import 'package:doglover/models/dog.dart';
@@ -57,5 +58,6 @@ class AccountViewModel extends BaseViewModel {
 
   Future<void> downloadUserImage() async {
     _image = await _accountRepository.getUserAvatar();
+    notifyListeners();
   }
 }

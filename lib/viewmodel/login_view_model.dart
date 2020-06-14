@@ -18,7 +18,9 @@ class LoginViewModel extends BaseViewModel {
 
   Future<LoginResult> logIn(String email, String password) async {
     _viewState = ViewState.loading;
-    return await _accountRepository.logIn(email, password).whenComplete(() {
+    return await _accountRepository
+        .logIn("vladyslaw@yahoo.com", "qwert54321")
+        .whenComplete(() {
       _viewState = ViewState.content;
       notifyListeners();
     });

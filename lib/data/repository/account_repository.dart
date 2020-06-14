@@ -50,8 +50,8 @@ class AccountRepository implements AccountDataSource {
   }
 
   @override
-  void uploadUserAvatar(File userAvatar) {
-    _accountDataSource.uploadUserAvatar(userAvatar);
+  Future<bool> uploadUserAvatar(File userAvatar) {
+    return _accountDataSource.uploadUserAvatar(userAvatar);
   }
 
   @override

@@ -3,7 +3,7 @@ import 'package:doglover/api/dog_lover_api_service.dart';
 import 'package:doglover/data/repository/account_repository.dart';
 import 'package:doglover/data/repository/breeds_repository.dart';
 import 'package:doglover/data/repository/dogs_repository.dart';
-import 'package:doglover/data/source/mock/acounts_mock_data_source.dart';
+import 'package:doglover/data/source/remote/account_remote_data_source.dart';
 import 'package:doglover/data/source/remote/breeds_remote_data_source.dart';
 import 'package:doglover/data/source/remote/dogs_remote_data_source.dart';
 import 'package:doglover/screens/breed_screen.dart';
@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final dogLoverApiService = DogLoverApiService();
     return MultiProvider(
       providers: <SingleChildCloneableWidget>[
         Provider<BreedsRepository>(
@@ -34,14 +35,14 @@ class MyApp extends StatelessWidget {
         ),
         Provider<AccountRepository>(
           create: (_) {
-            var accountRepo = AccountRepository(AccountsMockDataSource());
-            accountRepo.setLogged = true;
+            var accountRepo =
+                AccountRepository(AccountsRemoteDataSource(dogLoverApiService));
             return accountRepo;
           },
         ),
         Provider<DogsRepository>(
           create: (_) {
-            return DogsRepository(DogsRemoteService(DogLoverApiService()));
+            return DogsRepository(DogsRemoteService(dogLoverApiService));
           },
         ),
         ChangeNotifierProvider<BottomNavigationBarProvider>(

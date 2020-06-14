@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doglover/api/dog_lover_api_service.dart';
 import 'package:doglover/data/source/account_data_source.dart';
 import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/data/source/firebase_store_keys.dart';
@@ -9,8 +10,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
 class AccountsRemoteDataSource implements AccountDataSource {
-  AccountsRemoteDataSource();
+  AccountsRemoteDataSource(this.dogLoverApiService);
 
+  final DogLoverApiService dogLoverApiService;
   final _auth = FirebaseAuth.instance;
   final _firestore = Firestore.instance;
 
@@ -91,7 +93,10 @@ class AccountsRemoteDataSource implements AccountDataSource {
   }
 
   @override
-  void uploadUserAvatar(File userAvatar) {}
+  Future<bool> uploadUserAvatar(File userAvatar) async {
+    final user = await _auth.currentUser();
+    return dogLoverApiService.uploadAvatar(user.uid, userAvatar);
+  }
 
   @override
   Future<File> getUserAvatar() {}

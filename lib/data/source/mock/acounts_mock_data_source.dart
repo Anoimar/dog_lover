@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:doglover/api/dog_lover_api_service.dart';
 import 'package:doglover/data/source/remote/account_remote_data_source.dart';
 import 'package:doglover/models/account.dart';
 
 class AccountsMockDataSource extends AccountsRemoteDataSource {
   File userAvatar;
+
+  AccountsMockDataSource(DogLoverApiService dogLoverApiService)
+      : super(dogLoverApiService);
 
   @override
   Future<Account> getAccount() {
@@ -21,7 +25,7 @@ class AccountsMockDataSource extends AccountsRemoteDataSource {
   }
 
   @override
-  void uploadUserAvatar(File userAvatar) {
+  Future<bool> uploadUserAvatar(File userAvatar) async {
     this.userAvatar = userAvatar;
   }
 }

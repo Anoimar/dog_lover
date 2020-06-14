@@ -18,5 +18,5 @@ abstract class AccountDataSource {
 
   Future<File> getUserAvatar();
 
-  void uploadUserAvatar(File userAvatar);
+  Future<bool> uploadUserAvatar(File userAvatar);
 }

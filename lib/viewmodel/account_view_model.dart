@@ -42,13 +42,14 @@ class AccountViewModel extends BaseViewModel {
     _name = account.name;
     _email = account.email;
     downloadUserImage();
-    _dogs = await _dogsRepository.loadDogs();
+    //_dogs = await _dogsRepository.loadDogs();
     notifyListeners();
   }
 
-  void imagePicked(File newImage) {
+  Future<void> imagePicked(File newImage) async {
     _image = newImage;
-    _accountRepository.uploadUserAvatar(newImage);
+    var result = await _accountRepository.uploadUserAvatar(newImage);
+    print(result);
     notifyListeners();
   }
 

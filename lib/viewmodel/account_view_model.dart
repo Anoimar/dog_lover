@@ -13,11 +13,11 @@ class AccountViewModel extends BaseViewModel {
   final BuildContext context;
   String _name = '';
   String _email = '';
-  File _image;
+  String _userImageUrl = '';
 
   String get email => _email;
-  File get image => _image;
   String get name => _name;
+  String get userImageUrl => _userImageUrl;
 
   List<Dog> _dogs = [];
 
@@ -41,24 +41,26 @@ class AccountViewModel extends BaseViewModel {
     var account = await _accountRepository.getAccount();
     _name = account.name;
     _email = account.email;
-    downloadUserImage();
     //_dogs = await _dogsRepository.loadDogs();
     notifyListeners();
+    getAccountData();
   }
 
   Future<void> imagePicked(File newImage) async {
-    _image = newImage;
     var result = await _accountRepository.uploadUserAvatar(newImage);
-    print(result);
-    notifyListeners();
+    if (result) {
+      getAccountData();
+    }
   }
 
   void logOff() {
     _accountRepository.logOff();
   }
 
-  Future<void> downloadUserImage() async {
-    _image = await _accountRepository.getUserAvatar();
+  Future<void> getAccountData() async {
+    var accountData = await _accountRepository.getAccountData();
+    print(accountData.avatarUrl);
+    _userImageUrl = accountData.avatarUrl;
     notifyListeners();
   }
 }

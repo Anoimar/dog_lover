@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/models/account.dart';
+import 'package:doglover/models/account_data.dart';
 
 abstract class AccountDataSource {
   bool isLogged();
@@ -16,7 +17,7 @@ abstract class AccountDataSource {
 
   Future<Account> getAccount();
 
-  Future<File> getUserAvatar();
+  Future<AccountData> getAccountData();
 
   Future<bool> uploadUserAvatar(File userAvatar);
 }

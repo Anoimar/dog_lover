@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:doglover/api/dog_lover_api_service.dart';
 import 'package:doglover/data/source/remote/account_remote_data_source.dart';
 import 'package:doglover/models/account.dart';
+import 'package:doglover/models/account_data.dart';
 
 class AccountsMockDataSource extends AccountsRemoteDataSource {
+  AccountData accountData;
   File userAvatar;
 
   AccountsMockDataSource(DogLoverApiService dogLoverApiService)
@@ -17,9 +19,9 @@ class AccountsMockDataSource extends AccountsRemoteDataSource {
   }
 
   @override
-  Future<File> getUserAvatar() {
-    if (userAvatar != null) {
-      return Future.value(userAvatar);
+  Future<AccountData> getAccountData() {
+    if (accountData != null) {
+      return Future.value(accountData);
     }
     return null;
   }

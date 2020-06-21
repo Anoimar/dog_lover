@@ -68,8 +68,8 @@ class AccountScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: CircleAvatar(
                             radius: avatarRadius,
-                            backgroundImage: model.image != null
-                                ? FileImage(model.image)
+                            backgroundImage: model.userImageUrl != ''
+                                ? CachedNetworkImageProvider(model.userImageUrl)
                                 : AssetImage('assets/login_background.jpeg'),
                           ),
                         ),
@@ -82,7 +82,8 @@ class AccountScreen extends StatelessWidget {
                             child: FloatingActionButton(
                               onPressed: () async {
                                 var image = await ImagePicker.pickImage(
-                                    source: ImageSource.gallery);
+                                    source: ImageSource.gallery,
+                                    imageQuality: 10);
                                 model.imagePicked(image);
                               },
                               backgroundColor: Styles.primaryDark,

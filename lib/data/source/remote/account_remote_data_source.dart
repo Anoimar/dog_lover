@@ -6,6 +6,7 @@ import 'package:doglover/data/source/account_data_source.dart';
 import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/data/source/firebase_store_keys.dart';
 import 'package:doglover/models/account.dart';
+import 'package:doglover/models/account_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -99,5 +100,8 @@ class AccountsRemoteDataSource implements AccountDataSource {
   }
 
   @override
-  Future<File> getUserAvatar() {}
+  Future<AccountData> getAccountData() async {
+    final user = await _auth.currentUser();
+    return dogLoverApiService.getUserData(user.uid);
+  }
 }

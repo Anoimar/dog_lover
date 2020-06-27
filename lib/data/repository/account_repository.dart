@@ -4,10 +4,14 @@ import 'package:doglover/data/source/account_data_source.dart';
 import 'package:doglover/data/source/firebase_results.dart';
 import 'package:doglover/models/account.dart';
 import 'package:doglover/models/account_data.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class AccountRepository implements AccountDataSource {
   final AccountDataSource _accountDataSource;
   bool _isLogged = false;
+  bool _cacheIsDirty = false;
+  AccountData _accountData;
+  String _avatarUrl = '';
 
   AccountRepository(this._accountDataSource);
 
@@ -51,12 +55,25 @@ class AccountRepository implements AccountDataSource {
   }
 
   @override
-  Future<bool> uploadUserAvatar(File userAvatar) {
-    return _accountDataSource.uploadUserAvatar(userAvatar);
+  Future<bool> uploadUserAvatar(File userAvatar) async {
+    var result = await _accountDataSource.uploadUserAvatar(userAvatar);
+    if (result) {
+      await DefaultCacheManager().removeFile(_avatarUrl);
+      _avatarUrl = '';
+    }
+    return Future.value(result);
   }
 
   @override
-  Future<AccountData> getAccountData() {
-    return _accountDataSource.getAccountData();
+  Future<AccountData> getAccountData() async {
+    if (_cacheIsDirty || _accountData == null) {
+      _accountData = await _accountDataSource.getAccountData();
+    }
+    if (_avatarUrl == '') {
+      _avatarUrl = _accountData.avatarUrl +
+          '?v=${DateTime.now().millisecondsSinceEpoch}';
+      _accountData.avatarUrl = _avatarUrl;
+    }
+    return Future.value(_accountData);
   }
 }

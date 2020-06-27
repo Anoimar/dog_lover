@@ -1,6 +1,6 @@
 class AccountData {
   final String id;
-  final String avatarUrl;
+  String avatarUrl;
 
   AccountData({this.id, this.avatarUrl});
 

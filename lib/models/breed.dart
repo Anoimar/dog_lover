@@ -1,4 +1,8 @@
+import 'package:floor/floor.dart';
+
+@entity
 class Breed {
+  @primaryKey
   final int id;
   final String name;
   String group;

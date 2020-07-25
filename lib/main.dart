@@ -3,6 +3,8 @@ import 'package:doglover/api/dog_lover_api_service.dart';
 import 'package:doglover/data/repository/account_repository.dart';
 import 'package:doglover/data/repository/breeds_repository.dart';
 import 'package:doglover/data/repository/dogs_repository.dart';
+import 'package:doglover/data/repository/favourite_repository.dart';
+import 'package:doglover/data/source/local/favourite_local_data_source.dart';
 import 'package:doglover/data/source/remote/account_remote_data_source.dart';
 import 'package:doglover/data/source/remote/breeds_remote_data_source.dart';
 import 'package:doglover/data/source/remote/dogs_remote_data_source.dart';
@@ -43,6 +45,11 @@ class MyApp extends StatelessWidget {
         Provider<DogsRepository>(
           create: (_) {
             return DogsRepository(DogsRemoteService(dogLoverApiService));
+          },
+        ),
+        Provider<FavouriteRepository>(
+          create: (_) {
+            return FavouriteRepository(FavouriteLocalDataSource());
           },
         ),
         ChangeNotifierProvider<BottomNavigationBarProvider>(

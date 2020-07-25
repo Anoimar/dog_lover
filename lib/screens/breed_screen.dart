@@ -59,9 +59,13 @@ class BreedDetails extends StatelessWidget {
                   width: 50.0,
                   height: 50.0,
                   child: FloatingActionButton(
+                    onPressed: () {
+                      model.favClicked();
+                    },
                     backgroundColor: Styles.primaryDark,
                     child: Icon(
                       Icons.favorite,
+                      color: model.isFav ? Colors.red : Colors.white,
                     ),
                   ),
                 )

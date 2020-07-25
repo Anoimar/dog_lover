@@ -9,12 +9,13 @@ import '../constants.dart';
 class BreedCardViewModel extends BaseViewModel {
   String _breedImageUrl = '';
   final Breed _breed;
+  final bool _isFavourite;
   BreedsRepository _breedsRepository;
   String get breedImageUrl => _breedImageUrl;
   Breed get breed => _breed;
   final BuildContext context;
 
-  BreedCardViewModel(this._breed, {@required this.context}) {
+  BreedCardViewModel(this._breed, this._isFavourite, {@required this.context}) {
     _breedsRepository = Provider.of<BreedsRepository>(context);
     setSelectedImageUrl(breed.id);
   }

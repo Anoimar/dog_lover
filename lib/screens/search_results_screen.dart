@@ -7,6 +7,7 @@ import 'package:doglover/viewmodel/breed_card_view_model.dart';
 import 'package:doglover/viewmodel/search_results_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 class SearchResultsScreen extends StatelessWidget {
   static const String id = 'search_results_screen';
@@ -18,7 +19,7 @@ class SearchResultsScreen extends StatelessWidget {
         model: SearchViewModel(context: context),
         builder: (SearchViewModel model) {
           model.queryResults(searchQuery);
-          List<Breed> filteredBreeds = model.filteredBreedsList;
+          List<Tuple2<bool, Breed>> filteredBreeds = model.filteredBreedsList;
           return Scaffold(
             appBar: AppBar(
               iconTheme: IconThemeData(color: Colors.black),
@@ -35,8 +36,10 @@ class SearchResultsScreen extends StatelessWidget {
                               vertical: 8.0, horizontal: 16.0),
                           child: ListView.builder(
                             itemBuilder: (context, index) {
+                              var breedFav = filteredBreeds[index];
                               return DogCard(
-                                breed: filteredBreeds[index],
+                                isFav: breedFav.item1,
+                                breed: breedFav.item2,
                               );
                             },
                             itemCount: model.filteredBreedsList.length,
@@ -52,14 +55,15 @@ class SearchResultsScreen extends StatelessWidget {
 }
 
 class DogCard extends StatelessWidget {
-  const DogCard({@required this.breed});
+  const DogCard({@required this.breed, @required this.isFav});
 
   final Breed breed;
+  final bool isFav;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<BreedCardViewModel>(
-        model: BreedCardViewModel(breed, context: context),
+        model: BreedCardViewModel(breed, isFav, context: context),
         builder: (BreedCardViewModel model) {
           return Card(
             child: InkWell(
@@ -95,7 +99,10 @@ class DogCard extends StatelessWidget {
                                   style: kSmallLabelStyle,
                                 ),
                               ),
-                              Icon(Icons.favorite)
+                              Icon(
+                                Icons.favorite,
+                                color: isFav ? Colors.red : Colors.white,
+                              )
                             ],
                           ),
                           SizedBox(

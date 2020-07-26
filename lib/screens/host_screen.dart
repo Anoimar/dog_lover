@@ -25,7 +25,6 @@ class _HostScreenState extends State<HostScreen> {
       FavouriteScreen(),
       AccountScreen(
         onLogOff: () {
-          print('loginig');
           bottomNavigationProvider.currentIndex = 0;
         },
       )
@@ -54,7 +53,7 @@ class _HostScreenState extends State<HostScreen> {
   bottomBarTapped(AccountRepository accountRepository,
       BottomNavigationBarProvider bottomNavigationBarProvider, int index) {
     var isLogged = accountRepository.isLogged();
-    if (isLogged || (index == 0)) {
+    if (isLogged || (index != 2)) {
       bottomNavigationBarProvider.currentIndex = index;
     } else {
       Navigator.pushNamed(context, LoginScreen.id);

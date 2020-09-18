@@ -23,8 +23,12 @@ class FavouriteViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     notifyListeners();
-    _favouriteBreedsList = await _favouriteRepository.getFavourite();
     _viewState = ViewState.content;
+    refreshList();
+  }
+
+  Future<void> refreshList() async {
+    _favouriteBreedsList = await _favouriteRepository.getFavourite();
     notifyListeners();
   }
 

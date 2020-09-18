@@ -1,3 +1,4 @@
+import 'package:doglover/screens/arguments/breed_details_args.dart';
 import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/widgets/expanded_list/entry.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ class GroupTitle extends StatelessWidget {
     if (root.children.isEmpty) {
       return ListTile(
         onTap: () {
-          Navigator.pushNamed(context, BreedScreen.id, arguments: root.id);
+          Navigator.pushNamed(context, BreedScreen.id,
+              arguments: BreedDetailsArgs(root.id));
         },
         title: Text(root.title),
       );

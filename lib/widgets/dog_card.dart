@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doglover/models/breed.dart';
+import 'package:doglover/screens/arguments/breed_details_args.dart';
 import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/viewmodel/breed_card_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
@@ -10,10 +11,12 @@ import '../constants.dart';
 import '../styles.dart';
 
 class DogCard extends StatelessWidget {
-  const DogCard({@required this.breed, @required this.isFav});
+  const DogCard(
+      {@required this.breed, @required this.isFav, this.onFavouriteChanged});
 
   final Breed breed;
   final bool isFav;
+  final Function onFavouriteChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,8 @@ class DogCard extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 Navigator.pushNamed(context, BreedScreen.id,
-                    arguments: model.breed.id);
+                    arguments: BreedDetailsArgs(breed.id,
+                        onFavouriteChanged: onFavouriteChanged));
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

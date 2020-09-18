@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doglover/constants.dart';
 import 'package:doglover/models/breed.dart';
+import 'package:doglover/screens/arguments/breed_details_args.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/breed_details_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
@@ -12,7 +13,10 @@ class BreedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int selectedId = ModalRoute.of(context).settings.arguments as int;
+    BreedDetailsArgs args =
+        ModalRoute.of(context).settings.arguments as BreedDetailsArgs;
+    int selectedId = args.id;
+    Function onFavouriteChanged = args.onFavouriteChanged;
     return ViewModelProvider<BreedDetailsViewModel>(
         model: BreedDetailsViewModel(context: context),
         builder: (BreedDetailsViewModel model) {
@@ -23,15 +27,16 @@ class BreedScreen extends StatelessWidget {
               extendBodyBehindAppBar: true,
               body: Container(
                   child: model.selectedBreed != null
-                      ? BreedDetails(model)
+                      ? BreedDetails(model, onFavouriteChanged)
                       : Container()));
         });
   }
 }
 
 class BreedDetails extends StatelessWidget {
-  const BreedDetails(this.model);
+  const BreedDetails(this.model, this.onFavouriteChanged);
   final BreedDetailsViewModel model;
+  final Function onFavouriteChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +66,9 @@ class BreedDetails extends StatelessWidget {
                   child: FloatingActionButton(
                     onPressed: () {
                       model.favClicked();
+                      if (onFavouriteChanged != null) {
+                        onFavouriteChanged();
+                      }
                     },
                     backgroundColor: Styles.primaryDark,
                     child: Icon(

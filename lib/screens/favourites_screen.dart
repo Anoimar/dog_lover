@@ -17,33 +17,68 @@ class FavouriteScreen extends StatelessWidget {
         return Scaffold(
             backgroundColor: Styles.mainBackground,
             body: SafeArea(
-              child: Column(children: [
-                model.favouriteBreedsList.toList().length > 0
-                    ? Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              final Breed favBreed =
-                                  model.favouriteBreedsList[index];
-                              return Dismissible(
-                                key: Key(favBreed.name),
-                                onDismissed: (direction) {
-                                  model.removeFromFavourite(favBreed);
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/lola.jpg'),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+                  Column(children: [
+                    model.favouriteBreedsList.toList().length > 0
+                        ? Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              child: ListView.builder(
+                                itemBuilder: (context, index) {
+                                  final Breed favBreed =
+                                      model.favouriteBreedsList[index];
+                                  return Dismissible(
+                                    key: Key(favBreed.name),
+                                    onDismissed: (direction) {
+                                      model.removeFromFavourite(favBreed);
+                                    },
+                                    child: DogCard(
+                                      isFav: true,
+                                      breed: favBreed,
+                                      onFavouriteChanged: () {
+                                        model.refreshList();
+                                      },
+                                    ),
+                                  );
                                 },
-                                child: DogCard(
-                                  isFav: true,
-                                  breed: favBreed,
+                                itemCount: model.favouriteBreedsList.length,
+                              ),
+                            ),
+                          )
+                        : Expanded(
+                            child: Column(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(),
                                 ),
-                              );
-                            },
-                            itemCount: model.favouriteBreedsList.length,
+                                Expanded(
+                                  child: Text(
+                                    'You have no favourite breeds ;(\nAdd some!',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    : Text('NO'),
-              ]),
+                  ]),
+                ],
+              ),
             ));
       },
     );

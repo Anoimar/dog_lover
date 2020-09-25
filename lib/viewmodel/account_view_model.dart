@@ -41,7 +41,7 @@ class AccountViewModel extends BaseViewModel {
     var account = await _accountRepository.getAccount();
     _name = account.name;
     _email = account.email;
-    //_dogs = await _dogsRepository.loadDogs();
+    _dogs = await _dogsRepository.loadDogs();
     notifyListeners();
     getAccountData();
   }
@@ -57,10 +57,32 @@ class AccountViewModel extends BaseViewModel {
     _accountRepository.logOff();
   }
 
+  Future<void> refreshDogsList() async {
+    _dogs = await _dogsRepository.loadDogs();
+    notifyListeners();
+  }
+
   Future<void> getAccountData() async {
     var accountData = await _accountRepository.getAccountData();
-    print(accountData.avatarUrl);
     _userImageUrl = accountData.avatarUrl;
     notifyListeners();
+  }
+
+  Future<void> addNewPic(
+      File image, String name, String breed, String description) async {
+    var result = await _dogsRepository.uploadDogPic(
+      image,
+      Dog.preparePicData(name, breed, description),
+    );
+    if (result) {
+      refreshDogsList();
+    }
+  }
+
+  Future<void> deleteDogPic(int id) async {
+    var result = await _dogsRepository.deleteDog(id);
+    if (result) {
+      refreshDogsList();
+    }
   }
 }

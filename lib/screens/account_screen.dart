@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:doglover/models/dog.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/account_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
+import 'package:doglover/widgets/dialogs/dl_ok_cancel_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -138,8 +140,14 @@ class AccountScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   FlatButton.icon(
-                                    onPressed: () {},
-                                    icon: Text('Add a dog'),
+                                    onPressed: () async {
+                                      var image = await ImagePicker.pickImage(
+                                          source: ImageSource.gallery,
+                                          imageQuality: 10);
+                                      model.addNewPic(image, "Krypto", "mixed",
+                                          "Superman's Dog");
+                                    },
+                                    icon: Text('Add a dog pic'),
                                     label: Icon(Icons.add),
                                   )
                                 ],
@@ -151,28 +159,35 @@ class AccountScreen extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
                                   var dogModel = model.dogs[index];
-                                  return Container(
-                                    height: 180.0,
-                                    width: 150,
-                                    child: InkWell(
-                                      onTap: () => print(dogModel.id),
-                                      child: Card(
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 8),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
+                                  return InkWell(
+                                    onTap: () {
+                                      print("card pressed");
+                                    },
+                                    child: Stack(children: [
+                                      DogSmallCard(dogModel: dogModel),
+                                      Positioned(
+                                        top: 8.0,
+                                        right: 16.0,
+                                        child: Container(
+                                          height: 32.0,
+                                          width: 32.0,
+                                          child: FittedBox(
+                                            child: FloatingActionButton(
+                                              child: Icon(Icons.close),
+                                              onPressed: () {
+                                                showDeletePicDialog(
+                                                  context,
+                                                  () {
+                                                    model.deleteDogPic(
+                                                        dogModel.id);
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
                                         ),
-                                        child: CachedNetworkImage(
-                                          imageUrl: dogModel.picUrl,
-                                          fit: BoxFit.cover,
-                                        ),
-                                        elevation: 4,
-                                        semanticContainer: true,
-                                        clipBehavior:
-                                            Clip.antiAliasWithSaveLayer,
-                                      ),
-                                    ),
+                                      )
+                                    ]),
                                   );
                                 },
                                 itemCount: model.dogs.length,
@@ -189,6 +204,45 @@ class AccountScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+void showDeletePicDialog(BuildContext context, Function onConfirmDelete) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return DLOkCancelDialog(
+          title: 'Remove pic',
+          text: 'Do you wish to remove this pic?',
+          onConfirmed: onConfirmDelete,
+        );
+      });
+}
+
+class DogSmallCard extends StatelessWidget {
+  const DogSmallCard({Key key, @required this.dogModel}) : super(key: key);
+
+  final Dog dogModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 180.0,
+      width: 150,
+      child: Card(
+        margin: EdgeInsets.symmetric(horizontal: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: CachedNetworkImage(
+          imageUrl: dogModel.picUrl,
+          fit: BoxFit.cover,
+        ),
+        elevation: 4,
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+      ),
     );
   }
 }

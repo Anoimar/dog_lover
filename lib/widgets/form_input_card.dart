@@ -7,10 +7,15 @@ class FormInputCard extends StatelessWidget {
   final bool isObscured;
   final Function getText;
   final String Function(String) validation;
+  final bool allowEmpty;
   final fieldKey;
 
   FormInputCard(this.icon, this.hintText,
-      {this.isObscured = false, getText, this.validation, this.fieldKey})
+      {this.isObscured = false,
+      this.allowEmpty = false,
+      getText,
+      this.validation,
+      this.fieldKey})
       : getText = getText ??
             ((String text) {
               print(text);
@@ -27,7 +32,7 @@ class FormInputCard extends StatelessWidget {
             getText(value);
           },
           validator: (String input) {
-            if (input.isEmpty) {
+            if (input.isEmpty && !allowEmpty) {
               return "Field can't be empty";
             }
             if (validation == null) {

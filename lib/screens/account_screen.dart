@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doglover/models/dog.dart';
+import 'package:doglover/screens/add_dog_pic_screen.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/account_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
@@ -83,10 +86,12 @@ class AccountScreen extends StatelessWidget {
                             height: 48.0,
                             child: FloatingActionButton(
                               onPressed: () async {
-                                var image = await ImagePicker.pickImage(
+                                var image = await ImagePicker().getImage(
                                     source: ImageSource.gallery,
                                     imageQuality: 10);
-                                model.imagePicked(image);
+                                if (image != null) {
+                                  model.imagePicked(File(image.path));
+                                }
                               },
                               backgroundColor: Styles.primaryDark,
                               child: Icon(
@@ -140,12 +145,9 @@ class AccountScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   FlatButton.icon(
-                                    onPressed: () async {
-                                      var image = await ImagePicker.pickImage(
-                                          source: ImageSource.gallery,
-                                          imageQuality: 10);
-                                      model.addNewPic(image, "Krypto", "mixed",
-                                          "Superman's Dog");
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, AddDogPicScreen.id);
                                     },
                                     icon: Text('Add a dog pic'),
                                     label: Icon(Icons.add),

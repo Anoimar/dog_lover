@@ -147,7 +147,10 @@ class AccountScreen extends StatelessWidget {
                                   FlatButton.icon(
                                     onPressed: () {
                                       Navigator.pushNamed(
-                                          context, AddDogPicScreen.id);
+                                          context, AddDogPicScreen.id,
+                                          arguments: () {
+                                        model.refreshDogsList();
+                                      });
                                     },
                                     icon: Text('Add a dog pic'),
                                     label: Icon(Icons.add),
@@ -175,6 +178,7 @@ class AccountScreen extends StatelessWidget {
                                           width: 32.0,
                                           child: FittedBox(
                                             child: FloatingActionButton(
+                                              heroTag: "delete_$index",
                                               child: Icon(Icons.close),
                                               onPressed: () {
                                                 showDeletePicDialog(

@@ -96,7 +96,11 @@ class AccountsRemoteDataSource implements AccountDataSource {
   @override
   Future<bool> uploadUserAvatar(File userAvatar) async {
     final user = await _auth.currentUser();
-    return dogLoverApiService.uploadAvatar(user.uid, userAvatar);
+    try {
+      return dogLoverApiService.uploadAvatar(user.uid, userAvatar);
+    } catch (e) {
+      return Future.value(false);
+    }
   }
 
   @override

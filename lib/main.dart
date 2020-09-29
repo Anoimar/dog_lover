@@ -68,7 +68,8 @@ class MyApp extends StatelessWidget {
             LoginScreen.id: (context) => LoginScreen(),
             CreateAccountScreen.id: (context) => CreateAccountScreen(),
             ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
-            AddDogPicScreen.id: (context) => AddDogPicScreen(),
+            AddDogPicScreen.id: (context) =>
+                AddDogPicScreen(ModalRoute.of(context).settings.arguments),
           }),
     );
   }

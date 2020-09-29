@@ -68,19 +68,24 @@ class DogLoverApiService {
 
   Future<bool> uploadPic(
       FormData formData, String fileName, String endpoint) async {
-    var response = await Dio().post('$_baseUrl/$endpoint', data: formData);
-    if (response.statusCode == 200) {
-      return response.data;
-    }
+    try {
+      var response = await Dio().post('$_baseUrl/$endpoint', data: formData);
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+    } catch (e) {}
     return false;
   }
 
   Future<AccountData> getUserData(String userId) async {
     Dio dio = new Dio(BaseOptions(baseUrl: _baseUrl));
-    var response = await dio.get("/user", queryParameters: {"userId": userId});
-    if (response.statusCode == 200) {
-      return AccountData.fromJson(response.data);
-    }
+    try {
+      var response =
+          await dio.get("/user", queryParameters: {"userId": userId});
+      if (response.statusCode == 200) {
+        return AccountData.fromJson(response.data);
+      }
+    } catch (e) {}
     throw Exception();
   }
 

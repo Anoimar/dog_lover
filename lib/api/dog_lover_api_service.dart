@@ -11,16 +11,25 @@ class DogLoverApiService {
   String _baseUrl = 'http://192.168.1.27:8080/';
   String _jsonResponse = '';
 
-  Future<List<Dog>> getMyDogs(String userId) async {
+  Future<List<Dog>> getMyDogs(String userId) {
+    return _getDogs('/my-dogs', userId);
+  }
+
+  Future<List<Dog>> getOtherDogs(String userId) {
+    return _getDogs('/other-dogs', userId);
+  }
+
+  Future<List<Dog>> _getDogs(String endpoint, String userId) async {
     Dio dio = new Dio(BaseOptions(baseUrl: _baseUrl));
-    var response =
-        await dio.get('/my-dogs', queryParameters: {"userId": userId});
-    if (response.statusCode == 200) {
-      print(response.data);
-      List responseBody = response.data;
-      return responseBody.map((dog) => Dog.fromJson(dog)).toList();
-    }
-    throw Exception();
+    try {
+      var response =
+          await dio.get(endpoint, queryParameters: {"userId": userId});
+      if (response.statusCode == 200) {
+        List responseBody = response.data;
+        return responseBody.map((dog) => Dog.fromJson(dog)).toList();
+      }
+    } catch (e) {}
+    return Future.error(Exception());
   }
 
   Future<bool> deleteDog(String userId, int dogId) async {
@@ -33,7 +42,8 @@ class DogLoverApiService {
     return false;
   }
 
-  Future<Dog> getDogDetails(String id) async {
+  //deprecated
+  Future<Dog> getDogDetails(int id) async {
     http.Response response = await _makeGetApiCall('dogs');
     if (response.statusCode == 200) {
       _jsonResponse = response.body;

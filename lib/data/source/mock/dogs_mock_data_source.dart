@@ -20,12 +20,17 @@ class DogsMockDataSource implements DogsDataSource {
   ];
 
   @override
-  Future<List<Dog>> loadDogs() {
+  Future<List<Dog>> loadMyDogs() {
     return Future.value(dogs);
   }
 
   @override
-  Future<Dog> getDog(String id) {
+  Future<List<Dog>> loadOtherDogs() {
+    return Future.value(dogs);
+  }
+
+  @override
+  Future<Dog> getDog(int id) {
     return Future.value(dogs.firstWhere((dog) {
       return dog.id == id;
     }));

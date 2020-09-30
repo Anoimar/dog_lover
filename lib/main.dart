@@ -11,6 +11,7 @@ import 'package:doglover/data/source/remote/dogs_remote_data_source.dart';
 import 'package:doglover/screens/add_dog_pic_screen.dart';
 import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/screens/create_account_screen.dart';
+import 'package:doglover/screens/dog_details_screen.dart';
 import 'package:doglover/screens/host_screen.dart';
 import 'package:doglover/screens/login_screen.dart';
 import 'package:doglover/screens/reset_password_screen.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
             LoginScreen.id: (context) => LoginScreen(),
             CreateAccountScreen.id: (context) => CreateAccountScreen(),
             ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
+            DogDetailsScreen.id: (context) => DogDetailsScreen(),
             AddDogPicScreen.id: (context) =>
                 AddDogPicScreen(ModalRoute.of(context).settings.arguments),
           }),

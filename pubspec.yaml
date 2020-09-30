@@ -32,6 +32,7 @@ dependencies:
   flutter_image_compress: ^0.6.8
   tuple: ^1.0.3
   mdi: ^3.0.0
+  toggle_switch: ^0.1.8
   sqflite:
   path:
 

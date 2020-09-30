@@ -12,12 +12,18 @@ class DogsRemoteService implements DogsDataSource {
   DogsRemoteService(this.dogLoverApiService);
 
   @override
-  Future<Dog> getDog(String id) {
+  Future<Dog> getDog(int id) {
     return dogLoverApiService.getDogDetails(id);
   }
 
   @override
-  Future<List<Dog>> loadDogs() async {
+  Future<List<Dog>> loadMyDogs() async {
+    final user = await _auth.currentUser();
+    return dogLoverApiService.getMyDogs(user.uid);
+  }
+
+  @override
+  Future<List<Dog>> loadOtherDogs() async {
     final user = await _auth.currentUser();
     return dogLoverApiService.getMyDogs(user.uid);
   }

@@ -3,12 +3,16 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doglover/models/dog.dart';
 import 'package:doglover/screens/add_dog_pic_screen.dart';
+import 'package:doglover/screens/arguments/dog_details_args.dart';
+import 'package:doglover/screens/dog_details_screen.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/account_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
+import 'package:doglover/viewmodel/view_state.dart';
 import 'package:doglover/widgets/dialogs/dl_ok_cancel_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class AccountScreen extends StatelessWidget {
   final Function onLogOff;
@@ -138,66 +142,92 @@ class AccountScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(
-                                    'My dogs',
-                                    style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  FlatButton.icon(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, AddDogPicScreen.id,
-                                          arguments: () {
-                                        model.refreshDogsList();
-                                      });
+                                  ToggleSwitch(
+                                    minWidth: 90.0,
+                                    initialLabelIndex:
+                                        model.isMyDogsMode ? 0 : 1,
+                                    activeBgColor: Styles.primaryDark,
+                                    inactiveBgColor: Styles.almostWhite,
+                                    labels: ['My dogs', 'Other dogs'],
+                                    onToggle: (index) {
+                                      model.myDogsToggled(0 == index);
                                     },
-                                    icon: Text('Add a dog pic'),
-                                    label: Icon(Icons.add),
-                                  )
+                                  ),
+                                  model.isMyDogsMode
+                                      ? FlatButton.icon(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, AddDogPicScreen.id,
+                                                arguments: () {
+                                              model.refreshDogsList();
+                                            });
+                                          },
+                                          icon: Text('Add a dog pic'),
+                                          label: Icon(Icons.add),
+                                        )
+                                      : Container(
+                                          child: SizedBox(
+                                            height: 48.0,
+                                          ),
+                                        )
                                 ],
                               ),
                             ),
                             Container(
                               height: 200.0,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  var dogModel = model.dogs[index];
-                                  return InkWell(
-                                    onTap: () {
-                                      print("card pressed");
-                                    },
-                                    child: Stack(children: [
-                                      DogSmallCard(dogModel: dogModel),
-                                      Positioned(
-                                        top: 8.0,
-                                        right: 16.0,
-                                        child: Container(
-                                          height: 32.0,
-                                          width: 32.0,
-                                          child: FittedBox(
-                                            child: FloatingActionButton(
-                                              heroTag: "delete_$index",
-                                              child: Icon(Icons.close),
-                                              onPressed: () {
-                                                showDeletePicDialog(
-                                                  context,
-                                                  () {
-                                                    model.deleteDogPic(
-                                                        dogModel.id);
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ]),
-                                  );
-                                },
-                                itemCount: model.dogs.length,
-                              ),
+                              child: model.viewState == ViewState.content
+                                  ? ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        var dogModel = model.dogs[index];
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, DogDetailsScreen.id,
+                                                arguments: DogDetailsArgs(
+                                                    dogModel.id, onEdited: () {
+                                                  model.refreshDogsList();
+                                                },
+                                                    isMyDog:
+                                                        model.myDogsSelected));
+                                          },
+                                          child: Stack(children: [
+                                            DogSmallCard(dogModel: dogModel),
+                                            model.isMyDogsMode
+                                                ? Positioned(
+                                                    top: 8.0,
+                                                    right: 16.0,
+                                                    child: Container(
+                                                      height: 32.0,
+                                                      width: 32.0,
+                                                      child: FittedBox(
+                                                        child:
+                                                            FloatingActionButton(
+                                                          heroTag:
+                                                              "delete_$index",
+                                                          child: Icon(
+                                                              Icons.delete),
+                                                          onPressed: () {
+                                                            showDeletePicDialog(
+                                                              context,
+                                                              () {
+                                                                model.deleteDogPic(
+                                                                    dogModel
+                                                                        .id);
+                                                              },
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : null
+                                          ]),
+                                        );
+                                      },
+                                      itemCount: model.dogs.length,
+                                    )
+                                  : Container(),
                             )
                           ],
                         ),

@@ -18,6 +18,10 @@ class AccountViewModel extends BaseViewModel {
   String get email => _email;
   String get name => _name;
   String get userImageUrl => _userImageUrl;
+  bool _isMyDogsMode = true;
+  bool get isMyDogsMode => _isMyDogsMode;
+  ViewState _viewState = ViewState.content;
+  ViewState get viewState => _viewState;
 
   List<Dog> _dogs = [];
 
@@ -27,9 +31,6 @@ class AccountViewModel extends BaseViewModel {
 
   DogsRepository _dogsRepository;
   AccountRepository _accountRepository;
-  ViewState _viewState = ViewState.content;
-
-  ViewState get viewState => _viewState;
 
   AccountViewModel(this.context) {
     _accountRepository = Provider.of<AccountRepository>(context);
@@ -37,11 +38,19 @@ class AccountViewModel extends BaseViewModel {
     start();
   }
 
+  bool _showMyDogs = true;
+
+  get myDogsSelected => _showMyDogs;
+
   Future<void> start() async {
     var account = await _accountRepository.getAccount();
     _name = account.name;
     _email = account.email;
-    _dogs = await _dogsRepository.loadDogs();
+    try {
+      _dogs = await _dogsRepository.loadMyDogs();
+    } catch (e) {
+      _viewState = ViewState.error;
+    }
     notifyListeners();
     getAccountData();
   }
@@ -58,7 +67,14 @@ class AccountViewModel extends BaseViewModel {
   }
 
   Future<void> refreshDogsList() async {
-    _dogs = await _dogsRepository.loadDogs();
+    try {
+      _dogs = _isMyDogsMode
+          ? await _dogsRepository.loadMyDogs()
+          : _dogsRepository.loadOtherDogs();
+      _viewState = ViewState.content;
+    } catch (e) {
+      _viewState = ViewState.error;
+    }
     notifyListeners();
   }
 
@@ -84,5 +100,11 @@ class AccountViewModel extends BaseViewModel {
     if (result) {
       refreshDogsList();
     }
+  }
+
+  void myDogsToggled(bool isMyDogsMode) {
+    _isMyDogsMode = isMyDogsMode;
+    refreshDogsList();
+    notifyListeners();
   }
 }

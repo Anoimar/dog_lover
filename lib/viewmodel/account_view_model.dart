@@ -16,11 +16,15 @@ class AccountViewModel extends BaseViewModel {
   String _userImageUrl = '';
 
   String get email => _email;
+
   String get name => _name;
+
   String get userImageUrl => _userImageUrl;
   bool _isMyDogsMode = true;
+
   bool get isMyDogsMode => _isMyDogsMode;
   ViewState _viewState = ViewState.content;
+
   ViewState get viewState => _viewState;
 
   List<Dog> _dogs = [];
@@ -67,10 +71,11 @@ class AccountViewModel extends BaseViewModel {
   }
 
   Future<void> refreshDogsList() async {
+    _viewState = ViewState.loading;
     try {
-      _dogs = _isMyDogsMode
-          ? await _dogsRepository.loadMyDogs()
-          : _dogsRepository.loadOtherDogs();
+      _isMyDogsMode
+          ? _dogs = await _dogsRepository.loadMyDogs()
+          : _dogs = await _dogsRepository.loadOtherDogs();
       _viewState = ViewState.content;
     } catch (e) {
       _viewState = ViewState.error;

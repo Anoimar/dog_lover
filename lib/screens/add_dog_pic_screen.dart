@@ -151,7 +151,7 @@ class _AddDogPicScreenState extends State<AddDogPicScreen> {
                                                 allowEmpty: true,
                                                 getText: (String value) {
                                                   setState(() {
-                                                    _breed = value.trim();
+                                                    _description = value.trim();
                                                   });
                                                 },
                                               ),
@@ -230,6 +230,7 @@ class _AddDogPicScreenState extends State<AddDogPicScreen> {
   void showUploadSuccessDialog(BuildContext context) {
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return DLAlertDialog(
             title: 'Dog added',

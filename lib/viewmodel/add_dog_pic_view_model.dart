@@ -22,6 +22,7 @@ class AddDogPicViewModel extends BaseViewModel {
   }
 
   Future<bool> uploadPic(String name, String breed, String description) {
+    print(description);
     _viewState = ViewState.loading;
     return _dogRepository
         .uploadDogPic(_dogPic, Dog.preparePicData(name, breed, description))

@@ -25,7 +25,7 @@ class DogsRemoteService implements DogsDataSource {
   @override
   Future<List<Dog>> loadOtherDogs() async {
     final user = await _auth.currentUser();
-    return dogLoverApiService.getMyDogs(user.uid);
+    return dogLoverApiService.getOtherDogs(user.uid);
   }
 
   @override

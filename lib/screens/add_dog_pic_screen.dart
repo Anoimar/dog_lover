@@ -123,6 +123,7 @@ class _AddDogPicScreenState extends State<AddDogPicScreen> {
                                               FormInputCard(
                                                 Mdi.formatTitle,
                                                 'Picture name',
+                                                inputLimit: 50,
                                                 getText: (String value) {
                                                   setState(() {
                                                     _name = value.trim();
@@ -136,6 +137,7 @@ class _AddDogPicScreenState extends State<AddDogPicScreen> {
                                                 Mdi.dog,
                                                 'Your dog breed (optional)',
                                                 allowEmpty: true,
+                                                inputLimit: 50,
                                                 getText: (String value) {
                                                   setState(() {
                                                     _breed = value.trim();
@@ -149,6 +151,7 @@ class _AddDogPicScreenState extends State<AddDogPicScreen> {
                                                 Icons.description,
                                                 'Description (optional)',
                                                 allowEmpty: true,
+                                                inputLimit: 400,
                                                 getText: (String value) {
                                                   setState(() {
                                                     _description = value.trim();

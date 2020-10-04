@@ -6,7 +6,9 @@ import 'package:doglover/screens/breed_screen.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/dog_details_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
+import 'package:doglover/viewmodel/view_state.dart';
 import 'package:doglover/widgets/appbar/app_bar_builder.dart';
+import 'package:doglover/widgets/loading_view.dart';
 import 'package:flutter/material.dart';
 
 class DogDetailsScreen extends StatelessWidget {
@@ -27,14 +29,19 @@ class DogDetailsScreen extends StatelessWidget {
               appBar: AppBarBuilder.createTransparentAppBar(),
               backgroundColor: Styles.mainBackground,
               extendBodyBehindAppBar: true,
-              body: Container(
-                  child: model.dog != null
-                      ? DogDetails(
-                          model,
-                          isMyDog,
-                          onEdited: onEdited,
-                        )
-                      : Container()));
+              body: Stack(
+                children: [
+                  Container(
+                      child: model.dog != null
+                          ? DogDetails(
+                              model,
+                              isMyDog,
+                              onEdited: onEdited,
+                            )
+                          : Container()),
+                  LoadingView(model.viewState == ViewState.loading)
+                ],
+              ));
         });
   }
 }
@@ -73,7 +80,12 @@ class DogDetails extends StatelessWidget {
                         width: 50.0,
                         height: 50.0,
                         child: FloatingActionButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (await model.deleteDogPic()) {
+                              onEdited();
+                              Navigator.pop(context);
+                            }
+                          },
                           backgroundColor: Styles.buttonColor,
                           child: Icon(
                             Icons.delete_forever,

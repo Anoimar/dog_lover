@@ -76,6 +76,31 @@ class DogLoverApiService {
     return uploadPic(formData, fileName, "upload-dog");
   }
 
+  Future<bool> updateDogPicData(String uploaderId, Dog dog) async {
+    var params = {
+      'userId': uploaderId,
+      'dog': {
+        Dog.keyId: dog.id,
+        Dog.keyName: dog.name,
+        Dog.keyDescription: dog.description,
+        Dog.keyBreed: dog.breed,
+      }
+    };
+    try {
+      var response = await Dio().post('$_baseUrl/my-dogs-update',
+          data: jsonEncode(params),
+          options: Options(headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+          }));
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
   Future<bool> uploadPic(
       FormData formData, String fileName, String endpoint) async {
     try {

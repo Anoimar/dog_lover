@@ -42,6 +42,11 @@ class DogsMockDataSource implements DogsDataSource {
   }
 
   @override
+  Future<bool> updateDog(Dog picData) {
+    return Future.value(true);
+  }
+
+  @override
   Future<bool> deleteDog(int id) {
     return Future.value(true);
   }

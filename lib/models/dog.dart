@@ -26,8 +26,13 @@ class Dog {
       this.description = '',
       this.verified = false});
 
-  factory Dog.preparePicData(String name, String breed, String description) =>
+  factory Dog.prepareSendPicData(
+          String name, String breed, String description) =>
       Dog(name, -1, breed: breed, description: description);
+
+  factory Dog.prepareUpdatePicData(
+          int id, String name, String breed, String description) =>
+      Dog(name, id, breed: breed, description: description);
 
   factory Dog.fromJson(Map<String, dynamic> json) =>
       Dog(json[keyName], json[keyId],

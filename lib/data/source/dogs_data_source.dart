@@ -8,4 +8,5 @@ abstract class DogsDataSource {
   Future<Dog> getDog(int id);
   Future<bool> uploadDogPic(File dogPic, Dog picData);
   Future<bool> deleteDog(int id);
+  Future<bool> updateDog(Dog picData);
 }

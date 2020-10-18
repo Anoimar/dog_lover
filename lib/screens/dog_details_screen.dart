@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doglover/constants.dart';
 import 'package:doglover/models/dog.dart';
 import 'package:doglover/screens/arguments/dog_details_args.dart';
+import 'package:doglover/screens/arguments/edit_dog_args.dart';
 import 'package:doglover/screens/breed_screen.dart';
+import 'package:doglover/screens/edit_dog_pic_screen.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/viewmodel/dog_details_view_model.dart';
 import 'package:doglover/viewmodel/view_model_provider.dart';
@@ -102,7 +104,7 @@ class DogDetails extends StatelessWidget {
               children: [
                 DogTraitColumn(
                   traitName: "Breed",
-                  value: model.dog.breed.isNotEmpty ? model.dog.breed : " ???",
+                  value: model.dog.breed ?? " ???",
                 ),
               ],
             ),
@@ -138,18 +140,20 @@ class DogDetails extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            color: Styles.eunry,
-                            textColor: Styles.almostWhite,
-                            child: Text(
-                              'Edit details',
-                            ),
-                            onPressed: () {
-                              print('Edited');
-                            },
-                          ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                              color: Styles.eunry,
+                              textColor: Styles.almostWhite,
+                              child: Text(
+                                'Edit details',
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, EditDogPicScreen.id,
+                                    arguments:
+                                        EditDogArgs.create(onEdited, dog));
+                              }),
                         ),
                       ],
                     )

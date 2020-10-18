@@ -35,6 +35,12 @@ class DogsRemoteService implements DogsDataSource {
   }
 
   @override
+  Future<bool> updateDog(Dog picData) async {
+    final user = await _auth.currentUser();
+    return dogLoverApiService.updateDogPicData(user.uid, picData);
+  }
+
+  @override
   Future<bool> deleteDog(int id) async {
     final user = await _auth.currentUser();
     return dogLoverApiService.deleteDog(user.uid, id);

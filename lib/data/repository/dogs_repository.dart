@@ -41,4 +41,9 @@ class DogsRepository implements DogsDataSource {
   Future<bool> deleteDog(int id) {
     return remoteDogsDataSource.deleteDog(id);
   }
+
+  @override
+  Future<bool> updateDog(Dog picData) {
+    return remoteDogsDataSource.updateDog(picData);
+  }
 }

@@ -93,7 +93,7 @@ class AccountViewModel extends BaseViewModel {
       File image, String name, String breed, String description) async {
     var result = await _dogsRepository.uploadDogPic(
       image,
-      Dog.preparePicData(name, breed, description),
+      Dog.prepareSendPicData(name, breed, description),
     );
     if (result) {
       refreshDogsList();

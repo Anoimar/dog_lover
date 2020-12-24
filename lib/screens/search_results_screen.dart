@@ -43,7 +43,36 @@ class SearchResultsScreen extends StatelessWidget {
                           ),
                         ),
                       )
-                    : Text('NO'),
+                    : Expanded(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  0.0, 0.0, 0.0, 32.0),
+                              child: Image.asset('assets/no_results.jpeg',
+                                  height: 350.0),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text('No results to show',
+                                    style: kEmptyStatePrimaryTextStyle),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                  'Maybe wrong spelling?',
+                                  style: kEmptyStateSecondaryTextStyle,
+                                ),
+                              ),
+                            )
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                        ),
+                      ),
               ],
             ),
           );

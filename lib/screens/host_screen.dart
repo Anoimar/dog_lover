@@ -2,6 +2,7 @@ import 'package:doglover/data/repository/account_repository.dart';
 import 'package:doglover/screens/account_screen.dart';
 import 'package:doglover/screens/breed_groups_screen.dart';
 import 'package:doglover/screens/favourites_screen.dart';
+import 'package:doglover/screens/info_screen.dart';
 import 'package:doglover/screens/login_screen.dart';
 import 'package:doglover/styles.dart';
 import 'package:doglover/widgets/bottomnavigation/bottom_navigation_provider.dart';
@@ -27,7 +28,8 @@ class _HostScreenState extends State<HostScreen> {
         onLogOff: () {
           bottomNavigationProvider.currentIndex = 0;
         },
-      )
+      ),
+      InfoScreen(),
     ];
     var accountRepository = Provider.of<AccountRepository>(context);
     return Scaffold(
@@ -35,6 +37,7 @@ class _HostScreenState extends State<HostScreen> {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Styles.quincy,
         currentIndex: bottomNavigationProvider.currentIndex,
+        type: BottomNavigationBarType.fixed,
         onTap: (index) {
           bottomBarTapped(accountRepository, bottomNavigationProvider, index);
         },
@@ -45,6 +48,8 @@ class _HostScreenState extends State<HostScreen> {
               icon: Icon(Icons.favorite, size: 30), title: Text('')),
           BottomNavigationBarItem(
               icon: Icon(Icons.person, size: 30), title: Text('')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.info, size: 30), title: Text('')),
         ],
       ),
     );
